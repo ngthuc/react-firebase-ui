@@ -34,7 +34,7 @@ enum AUTH_TYPE {
 
 const SignInScreen = () => {
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
     const [user, setUser] = useState<any>({});
