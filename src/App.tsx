@@ -1,10 +1,25 @@
-import React from 'react';
+import React, {lazy, Suspense} from 'react';
 import './App.css';
-import SignInPage from "./pages/SignInPage";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Loading from "./components/loading";
 
-const App = () =>{
+const Page404 = lazy(() => import("./pages/Page404"));
+const SignInPage = lazy(() => import("./pages/SignInPage"));
+
+const App = () => {
+
     return (
-        <SignInPage />
+        <div>
+            <h1>My App</h1>
+            <BrowserRouter>
+                <Suspense fallback={<Loading />}>
+                    <Routes>
+                        <Route path="login" element={<SignInPage/>}/>
+                        <Route path="*" element={<Page404 />}/>
+                    </Routes>
+                </Suspense>
+            </BrowserRouter>
+        </div>
     );
 }
 

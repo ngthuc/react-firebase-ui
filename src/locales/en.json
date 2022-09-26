@@ -1,0 +1,21 @@
+{
+  "translation": {
+    "common.back_button": "Back",
+    "common.cancel_button": "Cancel",
+    "common.continue_button": "Continue",
+    "common.next_button": "Next",
+    "common.resend_button": "Resend",
+    "common.submit_button": "Submit",
+    "common.verify_button": "Verify",
+    "sign_in_page.sign_in_with": "Sign in with",
+    "sign_in_page.sign_in_with_phone": "Sign in with phone",
+    "sign_in_with_phone.title": "Enter your phone number",
+    "sign_in_with_phone.phone_number_input_label": "Phone number",
+    "sign_in_with_phone.phone_auth_caution": "By tapping Verify, an SMS may be sent. Message &amp; data rates may apply.",
+    "verify_phone_auth.title": "Verify your phone number",
+    "verify_phone_auth.otp_guide_text": "Enter the 6-digit code we sent to",
+    "verify_phone_auth.otp_input_label": "6-digit code",
+    "verify_phone_auth.resend_time_in": "Resend code in",
+    "verify_phone_auth.otp_invalid": "Invalid verification code"
+  }
+}

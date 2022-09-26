@@ -1,5 +1,5 @@
 import React from 'react';
-import SignInScreen from "../screens/SignInScreen";
+import SignInScreen from "../../screens/SignInScreen";
 
 const SignInPage = () => {
     return (
