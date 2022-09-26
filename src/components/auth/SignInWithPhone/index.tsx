@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 const SignInWithPhone = (props: { onSubmit: any, onCancel: any }) => {
 
     const {onSubmit, onCancel} = props;
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const [phoneNumber, setPhoneNumber] = useState('');
 

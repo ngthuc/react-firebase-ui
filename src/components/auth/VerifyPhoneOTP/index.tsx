@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 const VerifyPhoneOTP = (props: { phoneNumber: string, onSubmit: any, onCancel: any }) => {
 
     const {phoneNumber, onSubmit, onCancel} = props;
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const [otp, setOtp] = useState('');
 
