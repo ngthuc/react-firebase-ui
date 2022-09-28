@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {AUTH_TYPE} from "../../utils/types";
+import {AUTH_TYPE} from "../../../utils/types";
 import {
     getAuth,
     GithubAuthProvider,
@@ -10,11 +10,11 @@ import {
 } from "firebase/auth";
 import parsePhoneNumber from "libphonenumber-js";
 import firebase from "firebase/compat/app";
-import SignInWithProvider from "./SignInWithProvider";
-import {firebaseConfig, getProviderName} from "../../utils/firebase";
-import SignInWithPhone from "./SignInWithPhone";
-import VerifyPhoneOTP from "./VerifyPhoneOTP";
-import SignInWithEmail from "./SignInWithEmail";
+import SignInWithProvider from "../SignInWithProvider";
+import {firebaseConfig, getProviderName} from "../../../utils/firebase";
+import SignInWithPhone from "../SignInWithPhone";
+import VerifyPhoneOTP from "../VerifyPhoneOTP";
+import SignInWithEmail from "../SignInWithEmail";
 
 firebase.initializeApp(firebaseConfig);
 

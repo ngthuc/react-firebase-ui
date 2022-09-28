@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.css';
-import FirebaseUI from "./demo/FirebaseUI";
+import FirebaseUIDemo from "./demo/FirebaseUIDemo";
 
 const App = () => {
     return (
-        <FirebaseUI />
+        <>
+            <FirebaseUIDemo />
+        </>
     );
 }
 

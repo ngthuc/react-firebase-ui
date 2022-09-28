@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import firebase from "firebase/compat/app";
 import {firebaseConfig} from "../../utils/firebase";
+import {isObj} from "../../utils/types";
 import {
     EmailAuthProvider,
     getAuth,
@@ -9,7 +10,6 @@ import {
     PhoneAuthProvider,
     signOut
 } from "firebase/auth";
-import {isObj} from "../../utils/types";
 import * as firebaseui from 'firebaseui';
 
 firebase.initializeApp(firebaseConfig);
