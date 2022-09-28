@@ -21,10 +21,10 @@ const firebaseUIConfig = {
     ]
 }
 
-const CustomFirebaseUI = () => {
+const FirebaseUICustomDemo = () => {
     return (
         <FirebaseUICustom config={firebaseUIConfig}/>
     );
 }
 
-export default CustomFirebaseUI;
+export default FirebaseUICustomDemo;
