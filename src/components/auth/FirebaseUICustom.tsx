@@ -1,19 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import firebase from 'firebase/compat/app';
+import {AUTH_TYPE} from "../../utils/types";
 import {
     getAuth,
-    signOut,
-    GoogleAuthProvider,
     GithubAuthProvider,
-    signInWithPopup,
-    signInWithPhoneNumber, RecaptchaVerifier,
+    GoogleAuthProvider,
+    RecaptchaVerifier,
+    signInWithPhoneNumber,
+    signInWithPopup, signOut
 } from "firebase/auth";
-import 'firebase/compat/auth';
-import {firebaseConfig} from "../../utils/firebase";
-import SignInWithPhone from "../../components/auth/SignInWithPhone";
-import parsePhoneNumber from 'libphonenumber-js';
-import VerifyPhoneOTP from "../../components/auth/VerifyPhoneOTP";
-import {useTranslation} from "react-i18next";
+import parsePhoneNumber from "libphonenumber-js";
+import firebase from "firebase/compat/app";
+import SignInWithProvider from "./SignInWithProvider";
+import {firebaseConfig, getProviderName} from "../../utils/firebase";
+import SignInWithPhone from "./SignInWithPhone";
+import VerifyPhoneOTP from "./VerifyPhoneOTP";
+import SignInWithEmail from "./SignInWithEmail";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -21,21 +22,10 @@ const auth = getAuth();
 // const user = auth.currentUser;
 const googleAuthProvider = new GoogleAuthProvider();
 const githubAuthProvider = new GithubAuthProvider();
-// To apply the default browser preference instead of explicitly setting it.
-firebase.auth().useDeviceLanguage();
 
-enum AUTH_TYPE {
-    OTHER_AUTH = 0,
-    PHONE_AUTH,
-    VERIFY_OTP,
-    VERIFY_SUCCESS,
-    VERIFY_FAILED,
-}
+const FirebaseUICustom = (props: {config: any}) => {
 
-const SignInScreen = () => {
-
-    const { t } = useTranslation();
-
+    const {config} = props;
     const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
     const [user, setUser] = useState<any>({});
     const [authType, setAuthType] = useState<AUTH_TYPE>(AUTH_TYPE.OTHER_AUTH);
@@ -48,6 +38,7 @@ const SignInScreen = () => {
     }
 
     const handleSignInWithGoogle = async () => {
+        console.log('handleSignInWithGoogle', googleAuthProvider);
         await signInWithPopup(auth, googleAuthProvider)
             .then((result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
@@ -75,6 +66,7 @@ const SignInScreen = () => {
         githubAuthProvider.setCustomParameters({
             'allow_signup': 'false'
         });
+        console.log('handleSignInWithGitHub', githubAuthProvider);
         await signInWithPopup(auth, githubAuthProvider)
             .then((result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
@@ -98,7 +90,30 @@ const SignInScreen = () => {
             });
     }
 
-    const handleSignInWithPhone = (value: string) => {
+    const handleSignInWithEmail = () => {
+        setAuthType(AUTH_TYPE.EMAIL_AUTH);
+    }
+
+    const handleSignInWithPhone = () => {
+        setAuthType(AUTH_TYPE.PHONE_AUTH)
+    }
+
+    const handleSignInWithProviderName = (providerName: string) => {
+        switch (providerName) {
+            case 'Google':
+                return handleSignInWithGoogle();
+            case 'Github':
+                return handleSignInWithGitHub();
+            case 'Email':
+                return handleSignInWithEmail();
+            case 'Phone':
+                return handleSignInWithPhone();
+            default:
+                return;
+        }
+    }
+
+    const handleSendOtpForSignInWithPhone = (value: string) => {
         const phoneNumber = parsePhoneNumber(value, 'VN')?.number;
         if (!phoneNumber) return;
         setPhoneNumber(phoneNumber);
@@ -160,72 +175,55 @@ const SignInScreen = () => {
         <>
             {
                 !isSignedIn && <>
-					<p>Vui lòng đăng nhập:</p>
-                    {
-                        authType === AUTH_TYPE.OTHER_AUTH && <div
-							className="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-phone-sign-in-start">
-							<ul className="firebaseui-idp-list">
-								<li className="firebaseui-list-item">
-									<button
-										className="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
-										data-provider-id="google.com" style={{backgroundColor: '#ffffff'}}
-										data-upgraded=",MaterialButton"
-										onClick={handleSignInWithGoogle}
-									>
-                                        <span className="firebaseui-idp-icon-wrapper">
-                                            <img className="firebaseui-idp-icon" alt="sign-in-with-google"
-                                                 src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"/>
-                                        </span>
-										<span className="firebaseui-idp-text firebaseui-idp-text-long" style={{fontSize: 13}}>
-                                            {t('sign_in_page.sign_in_with')} Google
-                                        </span>
-									</button>
-								</li>
-								<li className="firebaseui-list-item">
-									<button
-										className="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-phone firebaseui-id-idp-button"
-										data-provider-id="phone" style={{backgroundColor: '#333333'}}
-										data-upgraded=",MaterialButton"
-										onClick={handleSignInWithGitHub}
-									>
-                                        <span className="firebaseui-idp-icon-wrapper">
-                                            <img className="firebaseui-idp-icon" alt="sign-in-with-github"
-                                                 src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/github.svg"/>
-                                        </span>
-										<span className="firebaseui-idp-text firebaseui-idp-text-long" style={{fontSize: 13}}>
-                                            {t('sign_in_page.sign_in_with')} GitHub
-                                        </span>
-									</button>
-								</li>
-								<li className="firebaseui-list-item">
-									<button
-										className="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-phone firebaseui-id-idp-button"
-										data-provider-id="phone" style={{backgroundColor: '#02bd7e'}}
-										data-upgraded=",MaterialButton"
-										onClick={() => setAuthType(AUTH_TYPE.PHONE_AUTH)}
-									>
-                                        <span className="firebaseui-idp-icon-wrapper">
-                                            <img className="firebaseui-idp-icon" alt="sign-in-with-phone"
-                                                 src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/phone.svg"/>
-                                        </span>
-										<span className="firebaseui-idp-text firebaseui-idp-text-long" style={{fontSize: 13}}>
-                                            {t('sign_in_page.sign_in_with_phone')}
-                                        </span>
-									</button>
-								</li>
+					<div style={{margin: '50px auto'}}
+					     className="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-phone-sign-in-start"
+					>
+                        {
+                            authType === AUTH_TYPE.OTHER_AUTH && <ul className="firebaseui-idp-list">
+                                {
+                                    config.signInOptions.map((provider: any) => (
+                                        <li key={provider.providerId} className="firebaseui-list-item">
+                                            <SignInWithProvider
+                                                provider={provider}
+                                                key={provider.providerId}
+                                                btnLabel={`Đăng nhập với ${getProviderName(provider)}`}
+                                                onSignIn={handleSignInWithProviderName}
+                                            />
+                                        </li>
+                                    ))
+                                }
 							</ul>
-						</div>
-                    }
+                        }
 
-                    {
-                        authType === AUTH_TYPE.PHONE_AUTH &&
-						<SignInWithPhone onSubmit={handleSignInWithPhone} onCancel={resetForm}/>
-                    }
+                        {
+                            authType === AUTH_TYPE.PHONE_AUTH &&
+							<SignInWithPhone onSubmit={handleSendOtpForSignInWithPhone} onCancel={resetForm}/>
+                        }
 
-                    {
-                        authType === AUTH_TYPE.VERIFY_OTP &&
-	                    <VerifyPhoneOTP onSubmit={verifyOtpAndAuthenticate} onCancel={resetForm} phoneNumber={phoneNumber}/>
-                    }
+                        {
+                            authType === AUTH_TYPE.VERIFY_OTP &&
+							<VerifyPhoneOTP onSubmit={verifyOtpAndAuthenticate} onCancel={resetForm} phoneNumber={phoneNumber}/>
+                        }
+
+                        {
+                            authType === AUTH_TYPE.EMAIL_AUTH &&
+							<SignInWithEmail
+								mode={AUTH_TYPE.VERIFY_EMAIL}
+								onSubmit={handleSignInWithEmail}
+								onCancel={resetForm}
+							/>
+                        }
+
+                        {
+                            authType === AUTH_TYPE.VERIFY_EMAIL &&
+							<VerifyPhoneOTP onSubmit={verifyOtpAndAuthenticate} onCancel={resetForm} phoneNumber={phoneNumber}/>
+                        }
+
+                        {
+                            authType === AUTH_TYPE.VERIFY_PASSWORD &&
+							<VerifyPhoneOTP onSubmit={verifyOtpAndAuthenticate} onCancel={resetForm} phoneNumber={phoneNumber}/>
+                        }
+					</div>
 				</>
             }
 
@@ -236,4 +234,4 @@ const SignInScreen = () => {
     );
 }
 
-export default SignInScreen;
+export default FirebaseUICustom;
