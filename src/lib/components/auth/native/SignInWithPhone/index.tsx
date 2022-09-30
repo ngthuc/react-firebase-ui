@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import TextField from '@mui/material/TextField/TextField';
 import { useTranslation } from 'react-i18next';
+import {Card, CardActions, CardContent, CardFooter, CardHeader} from "../../../common/Card";
 
 const SignInWithPhone = (props: { onSubmit: any, onCancel: any }) => {
 
@@ -20,11 +21,11 @@ const SignInWithPhone = (props: { onSubmit: any, onCancel: any }) => {
     }
 
     return (
-        <div className="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-phone-sign-in-start">
-            <div className="firebaseui-card-header">
-                <h1 className="firebaseui-title">{t('sign_in_with_phone.title')}</h1>
-            </div>
-            <div className="firebaseui-card-content">
+        <Card>
+            <CardHeader>
+                {t('sign_in_with_phone.title')}
+            </CardHeader>
+            <CardContent>
                 <div className="firebaseui-relative-wrapper">
                     <div className="firebaseui-phone-number">
                         <div
@@ -53,8 +54,8 @@ const SignInWithPhone = (props: { onSubmit: any, onCancel: any }) => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="firebaseui-card-actions">
+            </CardContent>
+            <CardActions>
                 <div className="firebaseui-form-actions">
                     <button
                         className="firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary"
@@ -67,13 +68,13 @@ const SignInWithPhone = (props: { onSubmit: any, onCancel: any }) => {
                         {t('common.verify_button')}
                     </button>
                 </div>
-            </div>
-            <div className="firebaseui-card-footer">
+            </CardActions>
+            <CardFooter>
                 <p className="firebaseui-tos firebaseui-phone-sms-notice">
                     {t('sign_in_with_phone.phone_auth_caution')}
                 </p>
-            </div>
-        </div>
+            </CardFooter>
+        </Card>
     );
 }
 

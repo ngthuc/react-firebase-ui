@@ -1,0 +1,16 @@
+# configuration for the firebase project
+firebase.json
+
+# react build files
+public/
+src/
+
+# cicd folder
+.github/
+
+# ide files
+.idea/
+
+# development files
+babel.config.json
+tsconfig.json

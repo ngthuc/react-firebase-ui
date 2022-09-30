@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import FirebaseUIDemo from "./demo/FirebaseUIDemo";
+import FirebaseDemo from "./demo/FirebaseDemo";
 
 const App = () => {
     return (
         <>
-            <FirebaseUIDemo />
+            <FirebaseDemo />
         </>
     );
 }

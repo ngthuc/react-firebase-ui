@@ -1,0 +1,7 @@
+.firebaseui-idp-list, .firebaseui-tenant-list {
+    margin: 1em 0 0 !important;
+}
+
+span.text-btn {
+    cursor: pointer !important;
+}
