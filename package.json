@@ -1,6 +1,6 @@
 {
   "name": "@ngthuc/react-fui",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "dist/index.js",
   "private": false,
   "license": "MIT",
@@ -35,7 +35,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "pkg": "rm -rf dist && babel src/lib --out-dir dist --copy-files",
-    "publish": "npm version patch --force && npm publish --access public",
+    "patch": "npm version patch --force -m \"Upgrade to %s for reasons\"",
+    "minor": "npm version minor --force -m \"Upgrade to %s for reasons\"",
+    "major": "npm version major --force -m \"Upgrade to %s for reasons\"",
+    "version": "npm -f version",
+    "publish": "npm publish --access public",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
