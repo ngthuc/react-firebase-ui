@@ -1,7 +1,7 @@
 {
   "name": "@ngthuc/react-fui",
-  "version": "0.1.14",
-  "main": "dist/index.js",
+  "version": "0.1.15",
+  "main": "index.js",
   "private": false,
   "license": "MIT",
   "description": "React components for Firebase UI",
@@ -19,19 +19,22 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "firebase": "^9.10.0",
-    "i18next": "^21.9.2",
     "libphonenumber-js": "^1.10.13",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^11.18.6",
-    "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.3",
+    "@babel/preset-env": "^7.19.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "pkg": "rm -rf dist && babel src/lib --out-dir dist --copy-files && cp package.json dist",
+    "pkg": "rm -rf dist && babel src/ --out-dir dist --copy-files && cp package.json dist",
     "patch": "npm version patch --force",
     "minor": "npm version minor --force",
     "major": "npm version major --force",
@@ -58,11 +61,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.19.3",
-    "@babel/preset-env": "^7.19.3",
-    "@babel/preset-react": "^7.18.6"
   }
 }
