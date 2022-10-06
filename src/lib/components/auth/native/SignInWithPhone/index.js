@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import TextField from '@mui/material/TextField/TextField';
-import { useTranslation } from 'react-i18next';
 import {Card, CardActions, CardContent, CardFooter, CardHeader} from "../../../common/Card";
+import PropTypes from "prop-types";
 
-const SignInWithPhone = (props: { onSubmit: any, onCancel: any }) => {
+const SignInWithPhone = (props) => {
 
     const {onSubmit, onCancel} = props;
-    const { t } = useTranslation();
 
     const [phoneNumber, setPhoneNumber] = useState('');
 
-    const handleSubmitPhone = (event: any) => {
+    const handleSubmitPhone = (event) => {
         if (phoneNumber === "" || phoneNumber.length < 10) return;
         console.log('verify', {event, phoneNumber});
         onSubmit(phoneNumber)
@@ -23,7 +22,7 @@ const SignInWithPhone = (props: { onSubmit: any, onCancel: any }) => {
     return (
         <Card>
             <CardHeader>
-                {t('sign_in_with_phone.title')}
+                Enter your phone number
             </CardHeader>
             <CardContent>
                 <div className="firebaseui-relative-wrapper">
@@ -34,12 +33,12 @@ const SignInWithPhone = (props: { onSubmit: any, onCancel: any }) => {
                         >
                             <TextField
                                 type="tel"
-                                label={t('sign_in_with_phone.phone_number_input_label')}
+                                label="Phone number"
                                 variant="standard"
                                 name="phoneNumber"
                                 id="standard-basic ui-sign-in-phone-number-input"
                                 className="mdl-textfield__input firebaseui-input firebaseui-id-phone-number"
-                                onChange={(e: any) => setPhoneNumber(e.target.value)}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
                                 value={phoneNumber}
                             />
                         </div>
@@ -60,22 +59,32 @@ const SignInWithPhone = (props: { onSubmit: any, onCancel: any }) => {
                     <button
                         className="firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary"
                         data-upgraded=",MaterialButton" onClick={handleCancel}>
-                        {t('common.cancel_button')}
+                        Cancel
                     </button>
                     <button
                         className="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
                         data-upgraded=",MaterialButton" onClick={handleSubmitPhone}>
-                        {t('common.verify_button')}
+                        Verify
                     </button>
                 </div>
             </CardActions>
             <CardFooter>
                 <p className="firebaseui-tos firebaseui-phone-sms-notice">
-                    {t('sign_in_with_phone.phone_auth_caution')}
+                    By tapping Verify, an SMS may be sent. Message &amp; data rates may apply.
                 </p>
             </CardFooter>
         </Card>
     );
+}
+
+SignInWithPhone.propsTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired
+}
+
+SignInWithPhone.defaultProps = {
+    onSubmit() {},
+    onCancel() {}
 }
 
 export default SignInWithPhone;

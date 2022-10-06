@@ -1,9 +1,10 @@
 # configuration for the firebase project
 firebase.json
+firebase.js
 
 # react build files
 public/
-src/
+dist/
 
 # cicd folder
 .github/

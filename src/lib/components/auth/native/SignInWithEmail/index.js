@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import TextField from "@mui/material/TextField/TextField";
 import {AUTH_TYPE} from "../../../../constants/types";
 import {Card, CardActions, CardContent, CardFooter, CardHeader} from '../../../common/Card';
+import PropTypes from "prop-types";
 
-const SignInWithEmail = (props: { mode: AUTH_TYPE.VERIFY_EMAIL | AUTH_TYPE.VERIFY_PASSWORD, enableSignUp?: boolean, onSubmit: any, onCancel: any }) => {
+const SignInWithEmail = (props) => {
 
     const {mode, enableSignUp, onSubmit, onCancel} = props;
 
-    const [step, setStep] = useState<AUTH_TYPE>(AUTH_TYPE.EMAIL_AUTH);
+    const [step, setStep] = useState(AUTH_TYPE.EMAIL_AUTH);
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     const [password, setPassword] = useState('');
@@ -15,7 +16,7 @@ const SignInWithEmail = (props: { mode: AUTH_TYPE.VERIFY_EMAIL | AUTH_TYPE.VERIF
     const [visiblePassword, setVisiblePassword] = useState(false);
     const [title, setTitle] = useState('Sign in with email');
 
-    const handleSubmitEmail = (event: any) => {
+    const handleSubmitEmail = (event) => {
         console.log('verify', {event, email, mode, enableSignUp});
         switch (step) {
             case AUTH_TYPE.EMAIL_AUTH:
@@ -77,7 +78,7 @@ const SignInWithEmail = (props: { mode: AUTH_TYPE.VERIFY_EMAIL | AUTH_TYPE.VERIF
 						        name="email"
 						        id="standard-basic ui-sign-in-email-input"
 						        className="mdl-textfield__input firebaseui-input firebaseui-id-email"
-						        onChange={(e: any) => setEmail(e.target.value)}
+						        onChange={(e) => setEmail(e.target.value)}
 						        value={email}
 					        />
 				        </div>
@@ -99,7 +100,7 @@ const SignInWithEmail = (props: { mode: AUTH_TYPE.VERIFY_EMAIL | AUTH_TYPE.VERIF
 						        name="fullName"
 						        id="standard-basic ui-sign-in-phone-number-input"
 						        className="mdl-textfield__input firebaseui-input firebaseui-id-name"
-						        onChange={(e: any) => setFullName(e.target.value)}
+						        onChange={(e) => setFullName(e.target.value)}
 						        value={fullName}
 					        />
 				        </div>
@@ -119,7 +120,7 @@ const SignInWithEmail = (props: { mode: AUTH_TYPE.VERIFY_EMAIL | AUTH_TYPE.VERIF
 							        autoComplete="new-password"
 							        id="standard-basic ui-sign-in-new-password-input"
 							        className="mdl-textfield__input mdl-textfield__input firebaseui-input firebaseui-id-new-password"
-							        onChange={(e: any) => setNewPassword(e.target.value)}
+							        onChange={(e) => setNewPassword(e.target.value)}
 							        value={newPassword}
 						        />
 					        </div>
@@ -148,7 +149,7 @@ const SignInWithEmail = (props: { mode: AUTH_TYPE.VERIFY_EMAIL | AUTH_TYPE.VERIF
 						        autoComplete="current-password"
 						        id="standard-basic ui-sign-in-password-input"
 						        className="mdl-textfield__input firebaseui-input firebaseui-id-password"
-						        onChange={(e: any) => setPassword(e.target.value)}
+						        onChange={(e) => setPassword(e.target.value)}
 						        value={password}
 					        />
 				        </div>
@@ -231,6 +232,20 @@ const SignInWithEmail = (props: { mode: AUTH_TYPE.VERIFY_EMAIL | AUTH_TYPE.VERIF
             <CardFooter />
         </Card>
     );
+}
+
+SignInWithEmail.propsTypes = {
+    mode: PropTypes.oneOf([AUTH_TYPE.VERIFY_EMAIL, AUTH_TYPE.VERIFY_PASSWORD]).isRequired,
+    enableSignUp: PropTypes.bool,
+    onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+}
+
+SignInWithEmail.defaultProps = {
+    mode: AUTH_TYPE.VERIFY_PASSWORD,
+    enableSignUp: false,
+    onSubmit() {},
+    onCancel() {},
 }
 
 export default SignInWithEmail;

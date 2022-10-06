@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Button = (props: {
-    type: any,
-    onPress(event: any): any,
-    children: any,
-    template(type: any): { getClass(): string, getColor(): string, getIcon(): string, getLabel(): string, getId(): string },
-}) => {
+const Button = (props) => {
 
     const {type, onPress, children, template} = props;
 
@@ -15,7 +10,7 @@ const Button = (props: {
     }
 
     const renderChildren = () => {
-        return React.Children.map(children, (child: any) => {
+        return React.Children.map(children, (child) => {
             return React.cloneElement(child, {
                 template: template(type),
                 key: `button-item-${template(type).getId()}`
@@ -43,11 +38,9 @@ Button.propTypes = {
 
 Button.defaultProps = {
     type: 'anonymous',
-    onPress: () => {
-    },
+    onPress() {},
     children: 'Continue as Anonymous',
-    template: () => {
-    },
+    template() {},
 };
 
 export default Button;

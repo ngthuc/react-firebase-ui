@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
+import PropTypes from "prop-types";
 import './index.css'
-import {AUTH_TYPE} from "../../constants/types";
+import './firebaseui.css';
+import {AUTH_TYPE, PROVIDER_TYPE} from "../../constants/types";
 import {
     getAuth,
     GithubAuthProvider,
@@ -12,7 +14,7 @@ import {
 } from "firebase/auth";
 import parsePhoneNumber from "libphonenumber-js";
 import firebase from "firebase/compat/app";
-import {firebaseConfig} from "../../../demo/firebase";
+import {firebaseConfig} from "../../../firebase";
 import SignInWithPhone from "../auth/native/SignInWithPhone";
 import VerifyPhoneOTP from "../auth/native/VerifyPhoneOTP";
 import SignInWithEmail from "../auth/native/SignInWithEmail";
@@ -24,32 +26,13 @@ firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
 const googleAuthProvider = new GoogleAuthProvider();
 const githubAuthProvider = new GithubAuthProvider();
-const zaloAuthProvider = new OAuthProvider('zalo.me');
+const zaloAuthProvider = new OAuthProvider(PROVIDER_TYPE.ZALO);
 
-enum PROVIDER_TYPE {
-    GOOGLE = 'google.com',
-    GITHUB = 'github.com',
-    PHONE = 'phone',
-    EMAIL = 'password',
-    FACEBOOK = 'facebook.com',
-    TWITTER = 'twitter.com',
-    MICROSOFT = 'microsoft.com',
-    APPLE = 'apple.com',
-    ZALO = 'zalo.me',
-    ANONYMOUS = 'anonymous',
-}
-
-const getProviderButtonTemplate = (provider: { providerId: string }): {
-    getClass(): string,
-    getColor(): string,
-    getIcon(): string,
-    getLabel(): string,
-    getId(): string,
-} => {
+const getProviderButtonTemplate = (provider) => {
     const {providerId} = provider;
-    let template: { btnName: string, btnClass: string, btnColor: string, btnIcon: string, };
+    let template;
     switch (providerId) {
-        case 'google.com':
+        case PROVIDER_TYPE.GOOGLE:
             template = {
                 btnName: 'Google',
                 btnClass: 'firebaseui-idp-google',
@@ -57,7 +40,7 @@ const getProviderButtonTemplate = (provider: { providerId: string }): {
                 btnIcon: IMAGES.googleIcon
             };
             break;
-        case 'github.com':
+        case PROVIDER_TYPE.GITHUB:
             template = {
                 btnName: 'GitHub',
                 btnClass: 'firebaseui-idp-github',
@@ -65,7 +48,7 @@ const getProviderButtonTemplate = (provider: { providerId: string }): {
                 btnIcon: IMAGES.githubIcon
             };
             break;
-        case 'phone':
+        case PROVIDER_TYPE.PHONE:
             template = {
                 btnName: 'Phone',
                 btnClass: 'firebaseui-idp-phone',
@@ -73,7 +56,7 @@ const getProviderButtonTemplate = (provider: { providerId: string }): {
                 btnIcon: IMAGES.phoneIcon
             };
             break;
-        case 'password':
+        case PROVIDER_TYPE.EMAIL:
             template = {
                 btnName: 'Email',
                 btnClass: 'firebaseui-idp-password',
@@ -81,7 +64,7 @@ const getProviderButtonTemplate = (provider: { providerId: string }): {
                 btnIcon: IMAGES.mailIcon
             };
             break;
-        case 'facebook.com':
+        case PROVIDER_TYPE.FACEBOOK:
             template = {
                 btnName: 'Facebook',
                 btnClass: 'firebaseui-idp-facebook',
@@ -89,7 +72,7 @@ const getProviderButtonTemplate = (provider: { providerId: string }): {
                 btnIcon: IMAGES.facebookIcon
             };
             break;
-        case 'twitter.com':
+        case PROVIDER_TYPE.TWITTER:
             template = {
                 btnName: 'Twitter',
                 btnClass: 'firebaseui-idp-twitter',
@@ -97,7 +80,7 @@ const getProviderButtonTemplate = (provider: { providerId: string }): {
                 btnIcon: IMAGES.twitterIcon
             };
             break;
-        case 'microsoft.com':
+        case PROVIDER_TYPE.MICROSOFT:
             template = {
                 btnName: 'Microsoft',
                 btnClass: 'firebaseui-idp-generic',
@@ -105,7 +88,7 @@ const getProviderButtonTemplate = (provider: { providerId: string }): {
                 btnIcon: IMAGES.microsoftIcon
             };
             break;
-        case 'apple.com':
+        case PROVIDER_TYPE.APPLE:
             template = {
                 btnName: 'Apple',
                 btnClass: 'firebaseui-idp-generic',
@@ -113,7 +96,7 @@ const getProviderButtonTemplate = (provider: { providerId: string }): {
                 btnIcon: IMAGES.appleIcon
             };
             break;
-        case 'zalo.me':
+        case PROVIDER_TYPE.ZALO:
             template = {
                 btnName: 'Zalo',
                 btnClass: 'firebaseui-idp-generic',
@@ -131,31 +114,21 @@ const getProviderButtonTemplate = (provider: { providerId: string }): {
             break;
     }
     return {
-        getClass(): string {
-            return template.btnClass
-        },
-        getColor(): string {
-            return template.btnColor
-        },
-        getIcon(): string {
-            return template.btnIcon
-        },
-        getLabel(): string {
-            return `Đăng nhập với ${template.btnName}`
-        },
-        getId(): string {
-            return providerId
-        }
+        getClass() {return template.btnClass},
+        getColor() {return template.btnColor},
+        getIcon() {return template.btnIcon},
+        getLabel() {return `Đăng nhập với ${template.btnName}`},
+        getId() {return providerId}
     };
 }
 
-const FirebaseUI = (props: { config: any }) => {
+const FirebaseUI = (props) => {
 
     const {config} = props;
     const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
-    const [user, setUser] = useState<any>({});
-    const [authType, setAuthType] = useState<AUTH_TYPE>(AUTH_TYPE.OTHER_AUTH);
-    const [result, setResult] = useState<any>(null);
+    const [user, setUser] = useState({});
+    const [authType, setAuthType] = useState(AUTH_TYPE.OTHER_AUTH);
+    const [result, setResult] = useState(null);
     const [phoneNumber, setPhoneNumber] = useState('');
 
     const resetForm = () => {
@@ -216,7 +189,7 @@ const FirebaseUI = (props: { config: any }) => {
             });
     }
 
-    const handleSignInWithEmail = async (data: any = null) => {
+    const handleSignInWithEmail = async (data = null) => {
         if (data) {
             const {email, password} = data;
             await signInWithEmailAndPassword(auth, email, password)
@@ -248,24 +221,24 @@ const FirebaseUI = (props: { config: any }) => {
         console.log('handleSignInWithZalo', zaloAuthProvider);
     }
 
-    const handleSignInWithProviderName = (provider: { providerId: PROVIDER_TYPE }) => {
+    const handleSignInWithProviderName = (provider) => {
         switch (provider.providerId) {
-            case PROVIDER_TYPE.GOOGLE:
+            case 'google.com':
                 return handleSignInWithGoogle();
-            case PROVIDER_TYPE.GITHUB:
+            case 'github.com':
                 return handleSignInWithGitHub();
-            case PROVIDER_TYPE.EMAIL:
+            case 'password':
                 return handleSignInWithEmail();
-            case PROVIDER_TYPE.PHONE:
+            case 'phone':
                 return handleSignInWithPhone();
-            case PROVIDER_TYPE.ZALO:
+            case 'zalo.me':
                 return handleSignInWithZalo();
             default:
                 return;
         }
     }
 
-    const handleSendOtpForSignInWithPhone = (value: string) => {
+    const handleSendOtpForSignInWithPhone = (value) => {
         const phoneNumber = parsePhoneNumber(value, 'VN')?.number;
         if (!phoneNumber) return;
         setPhoneNumber(phoneNumber);
@@ -287,15 +260,15 @@ const FirebaseUI = (props: { config: any }) => {
         });
     }
 
-    const verifyOtpAndAuthenticate = (otp: number) => {
+    const verifyOtpAndAuthenticate = (otp) => {
         if (!result || !otp) return;
         result.confirm(otp)
-            .then((result: { user: any; }) => {
+            .then((result) => {
                 // User signed in successfully.
                 const user = result.user;
                 setUser(user)
                 console.log('SignIn with phone:', {user})
-            }).catch((error: any) => {
+            }).catch((error) => {
             // User couldn't sign in (bad verification code?)
             // Handle Errors here.
             const errorCode = error.code;
@@ -324,7 +297,7 @@ const FirebaseUI = (props: { config: any }) => {
 
     // Listen to the Firebase Auth state and set the local state.
     useEffect(() => {
-        const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user: any) => {
+        const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
             setIsSignedIn(!!user);
             if (!user) setAuthType(AUTH_TYPE.OTHER_AUTH);
         });
@@ -386,6 +359,10 @@ const FirebaseUI = (props: { config: any }) => {
             }
         </>
     );
+}
+
+FirebaseUI.propsTypes = {
+    config: PropTypes.any.isRequired,
 }
 
 export default FirebaseUI;

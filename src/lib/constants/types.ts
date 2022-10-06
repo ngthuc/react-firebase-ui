@@ -11,3 +11,16 @@ export enum AUTH_TYPE {
     VERIFY_SUCCESS,
     VERIFY_FAILED,
 }
+
+export enum PROVIDER_TYPE {
+    GOOGLE = 'google.com',
+    GITHUB = 'github.com',
+    PHONE = 'phone',
+    EMAIL = 'password',
+    FACEBOOK = 'facebook.com',
+    TWITTER = 'twitter.com',
+    MICROSOFT = 'microsoft.com',
+    APPLE = 'apple.com',
+    ZALO = 'zalo.me',
+    ANONYMOUS = 'anonymous',
+}

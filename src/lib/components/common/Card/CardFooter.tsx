@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CardFooter = (props: { children: any, termAction?: () => void, policyAction?: () => void }) => {
+const CardFooter = (props) => {
     const {children, termAction, policyAction} = props;
 
     return (
@@ -9,12 +9,10 @@ const CardFooter = (props: { children: any, termAction?: () => void, policyActio
             {children}
             <ul className="firebaseui-tos-list firebaseui-tos">
                 <li className="firebaseui-inline-list-item">
-                    <span onClick={termAction}
-                          className="firebaseui-link firebaseui-tos-link text-btn">Terms of Service</span>
+                    <span onClick={termAction} style={{cursor: 'pointer'}} className="firebaseui-link firebaseui-tos-link">Terms of Service</span>
                 </li>
                 <li className="firebaseui-inline-list-item">
-                    <span onClick={policyAction}
-                          className="firebaseui-link firebaseui-pp-link text-btn">Privacy Policy</span>
+                    <span onClick={policyAction} style={{cursor: 'pointer'}} className="firebaseui-link firebaseui-pp-link">Privacy Policy</span>
                 </li>
             </ul>
         </div>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ButtonIcon from "./ButtonIcon";
 import ButtonLabel from "./ButtonLabel";
 
-const ButtonIconAndLabel = (props: { template: { getIcon(): string, getLabel(): string } }) => {
+const ButtonIconAndLabel = (props) => {
     const {template} = props;
     return (
         <>
@@ -18,7 +18,7 @@ ButtonIconAndLabel.propTypes = {
 }
 
 ButtonIconAndLabel.defaultProps = {
-    template: () => {}
+    template() {}
 }
 
 export default ButtonIconAndLabel;

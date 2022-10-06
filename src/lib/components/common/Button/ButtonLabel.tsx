@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ButtonLabel = (props: { template: { getLabel(): string } }) => {
+const ButtonLabel = (props) => {
     const {template} = props;
     return (
         <span className="firebaseui-idp-text firebaseui-idp-text-long" style={{fontSize: 13}}>
@@ -15,7 +15,7 @@ ButtonLabel.propTypes = {
 }
 
 ButtonLabel.defaultProps = {
-    template: () => {}
+    template() {}
 }
 
 export default ButtonLabel;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ButtonIcon = (props: { template: { getIcon(): string } }) => {
+const ButtonIcon = (props) => {
     const {template} = props;
     return (
         <>
@@ -20,7 +20,7 @@ ButtonIcon.propTypes = {
 }
 
 ButtonIcon.defaultProps = {
-    template: () => {}
+    template() {}
 }
 
 export default ButtonIcon;

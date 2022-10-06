@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from "prop-types";
 
-const ButtonList = (props: { children: any, items: Array<any> }) => {
+const ButtonList = (props) => {
     const {children, items} = props;
 
-    const renderChildren = (item: any, index: number) => {
-        return React.Children.map(children, (child: any) => {
+    const renderChildren = (item, index) => {
+        return React.Children.map(children, (child) => {
             return React.cloneElement(child, {
                 type: item,
                 key: `button-item-${index + 1}`
@@ -14,9 +14,9 @@ const ButtonList = (props: { children: any, items: Array<any> }) => {
     }
 
     return (
-        <ul className="firebaseui-idp-list">
+        <ul className="firebaseui-idp-list" style={{margin: '1em 0 0'}}>
             {
-                items.map((item: any, index) => (
+                items.map((item, index) => (
                     <li key={`item-${index + 1}`} className="firebaseui-list-item">
                         {renderChildren(item, index)}
                     </li>
@@ -25,8 +25,8 @@ const ButtonList = (props: { children: any, items: Array<any> }) => {
             <div className="firebaseui-card-footer firebaseui-provider-sign-in-footer">
                 <p className="firebaseui-tos firebaseui-tospp-full-message">
                     By continuing, you are indicating that you
-                    accept our <span className="firebaseui-link firebaseui-tos-link text-btn">Terms of Service</span> and <span
-                    className="firebaseui-link firebaseui-pp-link text-btn">Privacy Policy</span>.
+                    accept our <span className="firebaseui-link firebaseui-tos-link" style={{cursor: 'pointer'}}>Terms of Service</span> and <span
+                    className="firebaseui-link firebaseui-pp-link" style={{cursor: 'pointer'}}>Privacy Policy</span>.
                 </p>
             </div>
         </ul>

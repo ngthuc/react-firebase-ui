@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CardContent = (props: { children: any }) => {
+const CardContent = (props) => {
     const {children} = props;
     return (
         <div className="firebaseui-card-content">

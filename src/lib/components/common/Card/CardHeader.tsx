@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CardHeader = (props: {children: any}) => {
+const CardHeader = (props) => {
     const { children } = props;
     return (
         <div className="firebaseui-card-header">
