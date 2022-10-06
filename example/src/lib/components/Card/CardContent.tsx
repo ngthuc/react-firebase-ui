@@ -1,0 +1,25 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+export interface CardContentProps {
+    children: any;
+}
+
+const CardContent = (props: CardContentProps) => {
+    const {children} = props;
+    return (
+        <div className="firebaseui-card-content">
+            {children}
+        </div>
+    );
+}
+
+CardContent.propTypes = {
+    children: PropTypes.any.isRequired,
+};
+
+CardContent.defaultProps = {
+    children: 'Card Content',
+}
+
+export default CardContent;

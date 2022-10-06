@@ -1,10 +1,12 @@
 import resolve from "@rollup/plugin-node-resolve";
+import babel from 'rollup-plugin-babel';
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-
+import autoprefixer from 'autoprefixer';
+import postcss from 'rollup-plugin-postcss';
 const packageJson = require("./package.json");
 
 export default [
@@ -25,14 +27,24 @@ export default [
 		plugins: [
 			peerDepsExternal(),
 			resolve(),
+			babel({
+				exclude: 'node_modules/**',
+				presets: ['@babel/env', '@babel/preset-react']
+			}),
 			commonjs(),
 			typescript({ tsconfig: "./tsconfig.json" }),
+			postcss({
+				plugins: [autoprefixer()],
+				sourceMap: true,
+				extract: true,
+				minimize: true
+			}),
 			terser(),
 		],
-		external: ["react", "react-dom", "styled-components"]
+		external: ["react", "react-dom"]
 	},
 	{
-		input: "dist/esm/types/index.d.ts",
+		input: "dist/esm/index.d.ts",
 		output: [{ file: "dist/index.d.ts", format: "esm" }],
 		plugins: [dts()],
 	},

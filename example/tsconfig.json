@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "target": "es5",
     "lib": [
       "dom",
@@ -32,11 +33,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
-    "jsx": "react-jsx",
+//    "jsx": "react-jsx",
     // Added
     "declarationDir": "types",
     "sourceMap": true
   },
   "rootDir": "src",
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.css"],
+  "exclude": []
 }
