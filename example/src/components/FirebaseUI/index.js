@@ -19,7 +19,8 @@ import SignInWithPhone from "../auth/native/SignInWithPhone";
 import VerifyPhoneOTP from "../auth/native/VerifyPhoneOTP";
 import SignInWithEmail from "../auth/native/SignInWithEmail";
 import {IMAGES} from "../../images/images";
-import {Button, ButtonIconAndLabel, ButtonList} from "../Button";
+// import {Button, ButtonIconAndLabel, ButtonList} from "../Button";
+import {Button, ButtonIconAndLabel, ButtonList} from "@ngthuc/react-fui";
 
 firebase.initializeApp(firebaseConfig);
 
