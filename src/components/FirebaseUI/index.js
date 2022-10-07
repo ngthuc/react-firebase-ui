@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import './index.css'
-import './firebaseui.css';
+import '../../firebaseui.css';
 import {AUTH_TYPE, PROVIDER_TYPE} from "../../constants/types";
 import {
     getAuth,
@@ -14,12 +14,12 @@ import {
 } from "firebase/auth";
 import parsePhoneNumber from "libphonenumber-js";
 import firebase from "firebase/compat/app";
-import {firebaseConfig} from "../../firebase";
+import {firebaseConfig} from "../../../firebase";
 import SignInWithPhone from "../auth/native/SignInWithPhone";
 import VerifyPhoneOTP from "../auth/native/VerifyPhoneOTP";
 import SignInWithEmail from "../auth/native/SignInWithEmail";
 import {IMAGES} from "../../images/images";
-import {Button, ButtonIcon, ButtonLabel, ButtonList} from "@ngthuc/react-fui";
+import {Button, ButtonIconAndLabel, ButtonList} from "../Button";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -314,8 +314,7 @@ const FirebaseUI = (props) => {
             {
                 authType === AUTH_TYPE.OTHER_AUTH && <ButtonList items={config.signInOptions}>
                     <Button onPress={handleSignInWithProviderName} template={getProviderButtonTemplate}>
-                        <ButtonIcon/>
-                        <ButtonLabel/>
+                        <ButtonIconAndLabel/>
                     </Button>
                 </ButtonList>
             }

@@ -6,12 +6,14 @@ firebase.js
 public/
 dist/
 
-# cicd folder
+# folders
 .github/
-
-# ide files
 .idea/
+**/*/node_modules/
 
-# development files
+# development files and folders
 babel.config.json
 tsconfig.json
+example/
+firebase/
+components/FirebaseUI
