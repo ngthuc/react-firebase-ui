@@ -3,9 +3,9 @@ import {Card, CardHeader, CardContent, CardActions, CardFooter} from "./Card";
 import SignInWithEmail from "./SignInWithEmail";
 import SignInWithPhone from "./SignInWithPhone";
 import VerifyPhoneOTP from "./VerifyPhoneOTP";
-import * as Utils from "./utils";
 import {AUTH_TYPE, PROVIDER_TYPE} from "./types";
 import * as IMAGES from "./images";
+import * as Utils from "./utils";
 
 export {
 	SignInWithEmail,
