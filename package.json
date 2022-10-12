@@ -1,6 +1,6 @@
 {
   "name": "@ngthuc/react-fui",
-  "version": "0.1.37",
+  "version": "0.1.38",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "private": false,
@@ -10,6 +10,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@mui/material": "^5.10.6",
+    "@ngthuc/react-fui": "^0.1.37",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -46,9 +47,9 @@
     "typescript": "^4.8.4"
   },
   "peerDependencies": {
+    "firebase": "^9.10.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "firebase": "^9.10.0"
+    "react-dom": "^18.2.0"
   },
   "scripts": {
     "pack": "rm -rf dist && rollup -c",
