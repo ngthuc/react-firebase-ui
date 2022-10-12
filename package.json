@@ -1,6 +1,6 @@
 {
   "name": "@ngthuc/react-fui",
-  "version": "0.1.36",
+  "version": "0.1.37",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "private": false,
