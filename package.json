@@ -1,6 +1,6 @@
 {
   "name": "@ngthuc/react-fui",
-  "version": "0.1.43",
+  "version": "0.1.44",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "private": false,
@@ -24,7 +24,8 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-postcss": "^4.0.2"
+    "rollup-plugin-postcss": "^4.0.2",
+    "ts-standard": "^12.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
