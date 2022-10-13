@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import '../../../../firebaseui.css';
-import TextField from "@mui/material/TextField";
-import {AUTH_TYPE} from "../../../../constants/types";
-import {Card, CardActions, CardContent, CardFooter, CardHeader} from '../../../Card';
 import PropTypes from "prop-types";
+import '../firebaseui.css';
+import TextField from "@mui/material/TextField";
+import {AUTH_TYPE} from "../types";
+import {Card, CardActions, CardContent, CardFooter, CardHeader} from '../Card';
 
 const SignInWithEmail = (props) => {
 

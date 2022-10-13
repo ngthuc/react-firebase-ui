@@ -4,7 +4,7 @@ import SignInWithEmail from "./SignInWithEmail";
 import SignInWithPhone from "./SignInWithPhone";
 import VerifyPhoneOTP from "./VerifyPhoneOTP";
 import {AUTH_TYPE, PROVIDER_TYPE} from "./types";
-import * as IMAGES from "./images";
+import {IMAGES} from "./images";
 
 export {
 	SignInWithEmail,

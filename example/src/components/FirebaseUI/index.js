@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import './index.css'
 import './firebaseui.css';
-import {AUTH_TYPE, PROVIDER_TYPE} from "../../constants/types";
 import {
     getAuth,
     GithubAuthProvider,
@@ -18,8 +17,7 @@ import {firebaseConfig} from "../../firebase";
 import SignInWithPhone from "../auth/native/SignInWithPhone";
 import VerifyPhoneOTP from "../auth/native/VerifyPhoneOTP";
 import SignInWithEmail from "../auth/native/SignInWithEmail";
-import {IMAGES} from "../../images/images";
-import {Button, ButtonIcon, ButtonLabel, ButtonList} from "@ngthuc/react-fui";
+import {AUTH_TYPE, Button, ButtonIcon, ButtonLabel, ButtonList, IMAGES, PROVIDER_TYPE} from "@ngthuc/react-fui";
 
 firebase.initializeApp(firebaseConfig);
 

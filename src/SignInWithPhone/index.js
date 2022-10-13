@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import '../../../../firebaseui.css';
-import TextField from '@mui/material/TextField';
-import {Card, CardActions, CardContent, CardFooter, CardHeader} from "../../../Card";
 import PropTypes from "prop-types";
+import '../firebaseui.css';
+import TextField from '@mui/material/TextField';
+import {Card, CardActions, CardContent, CardFooter, CardHeader} from "../Card";
 
 const SignInWithPhone = (props) => {
 

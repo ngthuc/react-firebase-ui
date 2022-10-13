@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../../firebaseui.css';
+import '../firebaseui.css';
 import ButtonIcon from "./ButtonIcon";
 import ButtonLabel from "./ButtonLabel";
 

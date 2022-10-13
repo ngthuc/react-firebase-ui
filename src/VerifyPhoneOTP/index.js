@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import '../../../../firebaseui.css';
+import '../firebaseui.css';
 import TextField from '@mui/material/TextField';
 import PropTypes from "prop-types";
 

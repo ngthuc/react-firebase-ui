@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -35,7 +35,8 @@
     "jsx": "react-jsx",
     // Added
     "declarationDir": "types",
-    "sourceMap": true
+    "sourceMap": true,
+    "parser": "@typescript-eslint/parser"
   },
   "rootDir": "src",
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.css"],

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../../firebaseui.css';
+import '../firebaseui.css';
 
 // export interface CardHeaderProps {
 //     children: any,

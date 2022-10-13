@@ -1,4 +1,4 @@
-const IMAGES = {
+export const IMAGES = {
     anonymousIcon: require('./images/anonymous.png'),
     appleIcon: require('./images/apple.png'),
     facebookIcon: require('./images/facebook.svg').default,
@@ -10,6 +10,3 @@ const IMAGES = {
     twitterIcon: require('./images/twitter.svg').default,
     zaloIcon: require('./images/zalo.png'),
 }
-
-// Then, in your component, you can import the image like this:
-export default IMAGES;

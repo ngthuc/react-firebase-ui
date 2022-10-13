@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../../firebaseui.css';
+import '../firebaseui.css';
 
 const Card = (props) => {
     const {children} = props;
