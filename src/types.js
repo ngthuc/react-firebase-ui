@@ -1,4 +1,4 @@
-enum AUTH_TYPE {
+export enum AUTH_TYPE {
     OTHER_AUTH = 0,
     CHECK_RECOVERY_EMAIL,
     EMAIL_AUTH,
@@ -12,7 +12,7 @@ enum AUTH_TYPE {
     VERIFY_FAILED,
 }
 
-enum PROVIDER_TYPE {
+export enum PROVIDER_TYPE {
     GOOGLE = 'google.com',
     GITHUB = 'github.com',
     PHONE = 'phone',
@@ -24,5 +24,3 @@ enum PROVIDER_TYPE {
     ZALO = 'zalo.me',
     ANONYMOUS = 'anonymous',
 }
-
-export {AUTH_TYPE, PROVIDER_TYPE};
