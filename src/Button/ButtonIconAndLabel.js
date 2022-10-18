@@ -4,26 +4,24 @@ import '../firebaseui.css';
 import ButtonIcon from "./ButtonIcon";
 import ButtonLabel from "./ButtonLabel";
 
-// export interface ButtonIconAndLabelProps {
-//     template: any,
-// }
-
 const ButtonIconAndLabel = (props) => {
-    const {template} = props;
+    const {label, iconUrl} = props;
     return (
         <>
-            <ButtonIcon template={template}/>
-            <ButtonLabel template={template}/>
+            <ButtonIcon label={label}/>
+            <ButtonLabel iconUrl={iconUrl}/>
         </>
     );
 }
 
 ButtonIconAndLabel.propTypes = {
-    template: PropTypes.any.isRequired,
+    label: PropTypes.string.isRequired,
+    iconUrl: PropTypes.string.isRequired,
 }
 
 ButtonIconAndLabel.defaultProps = {
-    template() {}
+    label: 'Sign in with provider_name',
+    iconUrl: '',
 }
 
 export default ButtonIconAndLabel;

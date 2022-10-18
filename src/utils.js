@@ -1,26 +1,27 @@
-const typeOf = (value: any): {
-    value: string,
-    isArray(): boolean,
-    isFunction(): boolean,
-    isString(): boolean,
-    isObject(): boolean,
-    isNumber(): boolean,
-    isEmpty(): boolean,
-} => {
+function typeOf(value) {
     const type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     return {
         value: type,
-        isArray: () => type === 'array',
-        isFunction: () => type === 'function',
-        isString: () => type === 'string',
-        isObject: () => type === 'object',
-        isNumber: () => type === 'number',
-        isEmpty: () => type === 'array' ? value.length <= 0 : !value,
+        isArray() {return type === 'array'},
+        isFunction() {return type === 'function'},
+        isString() {return type === 'string'},
+        isObject() {return type === 'object'},
+        isNumber() {return type === 'number'},
+        isEmpty() {return type === 'array' ? value.length <= 0 : !value}
     }
 }
 
-const getProviderName = (provider: { constructor: { toString: () => string; }; }) => {
+function getProviderName(provider) {
     return provider.constructor.toString().split(' ')[1].replace('AuthProvider', '');
 }
 
-export {typeOf, getProviderName};
+function filterPropKeys(parentField = {}, listKey = []) {
+    return Object.keys(parentField).reduce((childField, key) => {
+        if (listKey.includes(key)) {
+            childField[key] = parentField[key];
+        }
+        return childField;
+    }, {});
+}
+
+export {typeOf, getProviderName, filterPropKeys};

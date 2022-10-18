@@ -2,18 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../firebaseui.css';
 
-// export interface ButtonIconProps {
-//     template: any,
-// }
-
 const ButtonIcon = (props) => {
-    const {template} = props;
+    const {iconUrl} = props;
     return (
         <>
             {
-                template && template.getIcon() &&
+                iconUrl &&
                 <span className="firebaseui-idp-icon-wrapper">
-                    <img className="firebaseui-idp-icon" alt="icon-provider" src={template.getIcon()}/>
+                    <img className="firebaseui-idp-icon" alt="icon-provider" src={iconUrl}/>
                 </span>
             }
         </>
@@ -21,11 +17,11 @@ const ButtonIcon = (props) => {
 }
 
 ButtonIcon.propTypes = {
-    template: PropTypes.any.isRequired,
+    iconUrl: PropTypes.string.isRequired,
 }
 
 ButtonIcon.defaultProps = {
-    template() {}
+    iconUrl: '',
 }
 
 export default ButtonIcon;

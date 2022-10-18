@@ -7,7 +7,6 @@ import {
     getAuth,
     GithubAuthProvider,
     GoogleAuthProvider,
-    OAuthProvider,
     PhoneAuthProvider
 } from "firebase/auth";
 import { firebaseConfig } from './firebase';
@@ -18,7 +17,10 @@ const googleAuthProvider = new GoogleAuthProvider();
 const githubAuthProvider = new GithubAuthProvider();
 const phoneAuthProvider = new PhoneAuthProvider(auth);
 const emailAuthProvider = new EmailAuthProvider();
-const zaloAuthProvider = new OAuthProvider('zalo.me');
+const zaloAuthProvider = {
+    providerId: 'zalo.me',
+    scopes: ['id', 'name', 'picture.type(large)']
+};
 
 const firebaseUIConfig = {
     signInOptions: [

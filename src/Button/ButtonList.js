@@ -1,21 +1,18 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import '../firebaseui.css';
-
-// export interface ButtonListProps {
-//     children: any;
-//     items: Array<any>;
-// }
+import {filterPropKeys} from "../utils";
 
 const ButtonList = (props) => {
     const {children, items} = props;
 
     const renderChildren = (item, index) => {
         return React.Children.map(children, (child) => {
-            return React.cloneElement(child, {
+            return React.cloneElement(child, filterPropKeys({
+                ...item,
                 type: item,
                 key: `button-item-${index + 1}`
-            });
+            }, ['type', 'key', 'backgroundColor', 'className', 'id', 'label', 'iconUrl']));
         });
     }
 

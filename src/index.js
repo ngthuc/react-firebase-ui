@@ -5,6 +5,7 @@ import SignInWithPhone from "./SignInWithPhone";
 import VerifyPhoneOTP from "./VerifyPhoneOTP";
 import {AUTH_TYPE, PROVIDER_TYPE} from "./types";
 import {IMAGES} from "./images";
+import {filterPropKeys, typeOf} from "./utils";
 
 export {
 	SignInWithEmail,
@@ -22,5 +23,7 @@ export {
 	CardFooter,
 	AUTH_TYPE,
 	PROVIDER_TYPE,
-	IMAGES
+	IMAGES,
+	filterPropKeys,
+	typeOf
 };

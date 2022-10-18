@@ -1,17 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../firebaseui.css';
-
-// export interface ButtonProps {
-//     type: any,
-//     onPress: (type: any) => void,
-//     children: any,
-//     template: any,
-// }
+import {filterPropKeys} from "../utils";
 
 const Button = (props) => {
 
-    const {type, onPress, children, template} = props;
+    const {id, type, onPress, children, backgroundColor, className} = props;
 
     const handlePressAction = () => {
         onPress(type);
@@ -19,17 +13,17 @@ const Button = (props) => {
 
     const renderChildren = () => {
         return React.Children.map(children, (child) => {
-            return React.cloneElement(child, {
-                template: template(type),
-                key: `button-item-${template(type).getId()}`
-            });
+            return React.cloneElement(child, filterPropKeys({
+                ...props,
+                key: `button-item-${id}`,
+            }, ['key', 'label', 'iconUrl']));
         });
     }
 
     return (
         <button
-            className={`firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised ${template(type).getClass()} firebaseui-id-idp-button`}
-            data-provider-id={type} style={{backgroundColor: template(type).getColor()}}
+            className={`firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised ${className} firebaseui-id-idp-button`}
+            data-provider-id={id} style={{backgroundColor}}
             data-upgraded=",MaterialButton" onClick={handlePressAction}
         >
             {renderChildren()}
@@ -38,17 +32,21 @@ const Button = (props) => {
 }
 
 Button.propTypes = {
+    id: PropTypes.string.isRequired,
     type: PropTypes.any.isRequired,
     onPress: PropTypes.func.isRequired,
     children: PropTypes.any.isRequired,
-    template: PropTypes.any.isRequired,
+    backgroundColor: PropTypes.string,
+    className: PropTypes.string,
 };
 
 Button.defaultProps = {
+    id: 'anonymous',
     type: 'anonymous',
     onPress() {},
     children: 'Continue as Anonymous',
-    template() {},
+    backgroundColor: '#f4b400',
+    className: 'firebaseui-idp-anonymous',
 };
 
 export default Button;
