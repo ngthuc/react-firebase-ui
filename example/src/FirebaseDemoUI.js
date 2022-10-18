@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from "prop-types";
-import './index.css'
-import './firebaseui.css';
 import {
 	getAuth,
 	GithubAuthProvider,
@@ -13,11 +11,20 @@ import {
 } from "firebase/auth";
 import parsePhoneNumber from "libphonenumber-js";
 import firebase from "firebase/compat/app";
-import {firebaseConfig} from "../../firebase";
-import SignInWithPhone from "../auth/native/SignInWithPhone";
-import VerifyPhoneOTP from "../auth/native/VerifyPhoneOTP";
-import SignInWithEmail from "../auth/native/SignInWithEmail";
-import {AUTH_TYPE, Button, ButtonIcon, ButtonLabel, ButtonList, IMAGES, PROVIDER_TYPE} from "@ngthuc/react-fui";
+import {firebaseConfig} from "./firebase";
+import {
+	AUTH_TYPE,
+	Button,
+	ButtonIcon,
+	ButtonLabel,
+	ButtonList,
+	IMAGES,
+	PROVIDER_TYPE,
+	SignInWithPhone,
+	VerifyPhoneOTP,
+	SignInWithEmail,
+	typeOf
+} from "@ngthuc/react-fui";
 
 firebase.initializeApp(firebaseConfig);
 

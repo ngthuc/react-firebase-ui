@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import FirebaseUI from "./components/FirebaseUI";
+import FirebaseUI from "./FirebaseDemoUI";
 import firebase from "firebase/compat/app";
 import {
     EmailAuthProvider,
