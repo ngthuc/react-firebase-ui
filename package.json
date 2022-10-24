@@ -1,6 +1,6 @@
 {
   "name": "@ngthuc/react-fui",
-  "version": "0.1.51",
+  "version": "0.1.52",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "private": false,
@@ -54,6 +54,7 @@
   "scripts": {
     "pack": "rm -rf dist && rollup -c",
     "build": "rm -rf dist && babel src --out-dir dist --copy-files",
+    "local": "rm -rf example/src/components/ && cp -R src/ example/src/components/",
     "patch": "npm version patch --force",
     "minor": "npm version minor --force",
     "major": "npm version major --force",
