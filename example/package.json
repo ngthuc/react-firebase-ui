@@ -9,7 +9,7 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@mui/material": "^5.10.8",
-    "@ngthuc/react-fui": "^0.1.51",
+    "@ngthuc/react-fui": "^0.1.55",
     "firebase": "^9.10.0",
     "libphonenumber-js": "^1.10.13",
     "prop-types": "^15.8.1",

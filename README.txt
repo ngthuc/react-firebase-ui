@@ -1,27 +1,29 @@
+# React Firebase Web Auth
+
+## Install
+```
+npm i @ngthuc/react-fui
+```
+
+## Demo usage
+```js
 import React, {useEffect, useState} from 'react';
-import PropTypes from "prop-types";
 import {getAuth, signOut} from "firebase/auth";
 import firebase from "firebase/compat/app";
-import {firebaseConfig} from "./firebase";
-// import StyledFirebaseAuth from "./components/StyledFirebaseAuth";
 import StyledFirebaseAuth from "@ngthuc/react-fui/StyledFirebaseAuth";
 import parsePhoneNumber from "libphonenumber-js";
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp({apiKey: "...", authDomain: "...", projectId: "...", ...});
 const auth = getAuth();
+const googleAuthProvider = new GoogleAuthProvider();
+const githubAuthProvider = new GithubAuthProvider();
+const phoneAuthProvider = new PhoneAuthProvider(auth);
+const emailAuthProvider = new EmailAuthProvider();
 
-const FirebaseUI = (props) => {
+const FirebaseDemo = (props) => {
 
-	const {config} = props;
-	const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
 	const [user, setUser] = useState({});
-
-	const getDisplayName = () => {
-		if (auth.currentUser) {
-			return auth.currentUser.displayName || auth.currentUser.email || auth.currentUser.phoneNumber;
-		}
-		return user?.displayName || user?.email || user?.phoneNumber || 'Unknown';
-	}
+	const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
 
 	// Listen to the Firebase Auth state and set the local state.
 	useEffect(() => {
@@ -34,9 +36,7 @@ const FirebaseUI = (props) => {
 	if (isSignedIn) {
 		return (
 			<div>
-				<p>
-					Xin chào {getDisplayName()}! Bạn hiện đã đăng nhập!
-				</p>
+				<p>Xin chào {user?.displayName || user?.email || user?.phoneNumber || 'Unknown'}! Bạn hiện đã đăng nhập!</p>
 				<button onClick={() => signOut(auth)}>Đăng xuất</button>
 			</div>
 		);
@@ -45,9 +45,14 @@ const FirebaseUI = (props) => {
 	return (
 		<StyledFirebaseAuth
 			uiConfig={{
-				...config,
+				defaultCountry: 'VN',
+				signInOptions: [
+					googleAuthProvider,
+					githubAuthProvider,
+					phoneAuthProvider,
+					emailAuthProvider
+				],
 				callbacks: {
-					...config.callbacks,
 					signInSuccessWithAuthResult: (authResult) => {
 						console.log('signInSuccessWithAuthResult', authResult);
 						setUser(authResult.user);
@@ -62,7 +67,6 @@ const FirebaseUI = (props) => {
 					},
 				},
 				locale: {
-					...config.locale,
 					parsePhoneNumber
 				}
 			}}
@@ -71,8 +75,8 @@ const FirebaseUI = (props) => {
 	)
 }
 
-FirebaseUI.propsTypes = {
-	config: PropTypes.any.isRequired,
-}
+export default FirebaseDemo;
+```
 
-export default FirebaseUI;
+## License & Credit
+Publish under MIT license by [ngthuc](https://ngthuc.com)

@@ -7,12 +7,14 @@ const ButtonList = (props) => {
     const {children, items} = props;
 
     const renderChildren = (item, index) => {
+        if (!item.type && !item.provider) return null;
         return React.Children.map(children, (child) => {
             return React.cloneElement(child, filterPropKeys({
                 ...item,
-                type: item,
+                type: item.type || null,
+                provider: item.provider || null,
                 key: `button-item-${index + 1}`
-            }, ['type', 'key', 'backgroundColor', 'className', 'id', 'label', 'iconUrl']));
+            }, ['type', 'key', 'provider', 'backgroundColor', 'className', 'id', 'label', 'iconUrl']));
         });
     }
 

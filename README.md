@@ -6,9 +6,9 @@ npm i @ngthuc/react-fui
 ```
 
 ## Development
-* Build dist and use local
+* Build dist and use local example
 ```
-npm run build && rm -rf example/node_modules/@ngthuc/react-fui && cp -v -a dist/ example/node_modules/@ngthuc/react-fui
+rm -rf example/src/components/ && cp -R src/ example/src/components/
 ```
 
 * In root dir

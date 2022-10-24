@@ -4,7 +4,7 @@ import '../firebaseui.css';
 import TextField from '@mui/material/TextField';
 import {Card, CardActions, CardContent, CardFooter, CardHeader} from "../Card";
 
-const SignInWithPhone = (props) => {
+const PhoneNumberEnter = (props) => {
 
     const {onSubmit, onCancel} = props;
 
@@ -78,14 +78,14 @@ const SignInWithPhone = (props) => {
     );
 }
 
-SignInWithPhone.propsTypes = {
+PhoneNumberEnter.propsTypes = {
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
 }
 
-SignInWithPhone.defaultProps = {
+PhoneNumberEnter.defaultProps = {
     onSubmit() {},
     onCancel() {}
 }
 
-export default SignInWithPhone;
+export default PhoneNumberEnter;

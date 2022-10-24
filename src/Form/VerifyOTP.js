@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import '../firebaseui.css';
 import TextField from '@mui/material/TextField';
 import PropTypes from "prop-types";
+import {Card, CardActions, CardContent, CardHeader} from "../Card";
 
-const VerifyPhoneOTP = (props) => {
+const VerifyOTP = (props) => {
 
     const {phoneNumber, onSubmit, onCancel} = props;
 
@@ -24,11 +25,9 @@ const VerifyPhoneOTP = (props) => {
     }
 
     return (
-        <div className="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-phone-sign-in-finish">
-            <div className="firebaseui-card-header">
-                <h1 className="firebaseui-title">Verify your phone number</h1>
-            </div>
-            <div className="firebaseui-card-content">
+        <Card>
+            <CardHeader>Verify your phone number</CardHeader>
+            <CardContent>
                 <p className="firebaseui-text">Enter the 6-digit code we sent to
                     <span className="firebaseui-link firebaseui-change-phone-number-link firebaseui-id-change-phone-number-link">
                         {phoneNumber}
@@ -54,8 +53,8 @@ const VerifyPhoneOTP = (props) => {
                         {otp.length !== 6 ? "Invalid verification code" : ''}
                     </p>
                 </div>
-            </div>
-            <div className="firebaseui-card-actions">
+            </CardContent>
+            <CardActions>
                 <div className="firebaseui-form-actions">
                     <button
                         className="firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary"
@@ -68,7 +67,7 @@ const VerifyPhoneOTP = (props) => {
                         Continue
                     </button>
                 </div>
-            </div>
+            </CardActions>
             <div className="firebaseui-resend-container">
                 <span className="firebaseui-id-resend-countdown firebaseui-hidden">
                     Resend code in 0:01
@@ -77,20 +76,20 @@ const VerifyPhoneOTP = (props) => {
                     Resend
                 </span>
             </div>
-        </div>
+        </Card>
     );
 }
 
-VerifyPhoneOTP.propsTypes = {
+VerifyOTP.propsTypes = {
     phoneNumber: PropTypes.string.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
 }
 
-VerifyPhoneOTP.defaultProps = {
+VerifyOTP.defaultProps = {
     phoneNumber: '',
     onSubmit() {},
     onCancel() {}
 }
 
-export default VerifyPhoneOTP;
+export default VerifyOTP;

@@ -23,6 +23,7 @@ const zaloAuthProvider = {
 };
 
 const firebaseUIConfig = {
+    defaultCountry: 'VN',
     signInOptions: [
         googleAuthProvider,
         githubAuthProvider,

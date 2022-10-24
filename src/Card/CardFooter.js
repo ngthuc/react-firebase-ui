@@ -2,12 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../firebaseui.css';
 
-// export interface CardFooterProps {
-//     children?: any,
-//     termAction?: () => void,
-//     policyAction?: () => void,
-// }
-
 const CardFooter = (props) => {
     const {children, termAction, policyAction} = props;
 

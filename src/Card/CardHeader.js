@@ -2,10 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../firebaseui.css';
 
-// export interface CardHeaderProps {
-//     children: any,
-// }
-
 const CardHeader = (props) => {
     const { children } = props;
     return (

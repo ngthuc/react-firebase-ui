@@ -5,10 +5,10 @@ import {filterPropKeys} from "../utils";
 
 const Button = (props) => {
 
-    const {id, type, onPress, children, backgroundColor, className} = props;
+    const {id, type, provider, onPress, children, backgroundColor, className} = props;
 
     const handlePressAction = () => {
-        onPress(type);
+        onPress({id, type, provider});
     }
 
     const renderChildren = () => {
@@ -33,7 +33,8 @@ const Button = (props) => {
 
 Button.propTypes = {
     id: PropTypes.string.isRequired,
-    type: PropTypes.any.isRequired,
+    type: PropTypes.any,
+    provider: PropTypes.any,
     onPress: PropTypes.func.isRequired,
     children: PropTypes.any.isRequired,
     backgroundColor: PropTypes.string,
@@ -42,7 +43,6 @@ Button.propTypes = {
 
 Button.defaultProps = {
     id: 'anonymous',
-    type: 'anonymous',
     onPress() {},
     children: 'Continue as Anonymous',
     backgroundColor: '#f4b400',
