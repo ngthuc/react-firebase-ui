@@ -1,5 +1,5 @@
 import resolve from "@rollup/plugin-node-resolve";
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup/plugin-babel';
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
@@ -7,19 +7,19 @@ import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import autoprefixer from 'autoprefixer';
 import postcss from 'rollup-plugin-postcss';
-const packageJson = require("./package.json");
+import pkg from './package.json';
 
 export default [
 	{
 		input: "src/index.tsx",
 		output: [
 			{
-				file: packageJson.main,
+				file: pkg.main,
 				format: "cjs",
 				sourcemap: true,
 			},
 			{
-				file: packageJson.module,
+				file: pkg.module,
 				format: "esm",
 				sourcemap: true,
 			},
@@ -31,8 +31,8 @@ export default [
 				exclude: 'node_modules/**',
 				presets: ['@babel/env', '@babel/preset-react']
 			}),
+			typescript({ typescript: require('typescript'), tsconfig: "./tsconfig.json" }),
 			commonjs(),
-			typescript({ tsconfig: "./tsconfig.json" }),
 			postcss({
 				plugins: [autoprefixer()],
 				sourceMap: true,
@@ -41,7 +41,10 @@ export default [
 			}),
 			terser(),
 		],
-		external: ["react", "react-dom"]
+		external: [
+			...Object.keys(pkg.dependencies || {}),
+			"react", "react-dom"
+		]
 	},
 	{
 		input: "dist/esm/index.js",

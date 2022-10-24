@@ -2,7 +2,7 @@
 
 ## Usage
 ```
-npm i @ngthuc/react-fui
+npm i react-firebase-web-auth
 ```
 
 ## Development

@@ -2,15 +2,18 @@
 
 ## Install
 ```
-npm i @ngthuc/react-fui
+npm i react-firebase-web-auth
 ```
+
+## Demo
+[react-firebase-web-auth-demo](https://react-firebase-web-auth-demo.web.app/)
 
 ## Demo usage
 ```js
 import React, {useEffect, useState} from 'react';
 import {getAuth, signOut} from "firebase/auth";
 import firebase from "firebase/compat/app";
-import StyledFirebaseAuth from "@ngthuc/react-fui/StyledFirebaseAuth";
+import StyledFirebaseAuth from "react-firebase-web-auth/StyledFirebaseAuth";
 import parsePhoneNumber from "libphonenumber-js";
 
 firebase.initializeApp({apiKey: "...", authDomain: "...", projectId: "...", ...});

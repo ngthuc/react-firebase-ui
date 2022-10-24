@@ -4,7 +4,7 @@ import {getAuth, signOut} from "firebase/auth";
 import firebase from "firebase/compat/app";
 import {firebaseConfig} from "./firebase";
 // import StyledFirebaseAuth from "./components/StyledFirebaseAuth";
-import StyledFirebaseAuth from "@ngthuc/react-fui/StyledFirebaseAuth";
+import StyledFirebaseAuth from "react-firebase-web-auth/StyledFirebaseAuth";
 import parsePhoneNumber from "libphonenumber-js";
 
 firebase.initializeApp(firebaseConfig);
