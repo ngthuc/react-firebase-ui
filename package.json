@@ -1,6 +1,6 @@
 {
   "name": "@ngthuc/react-fui",
-  "version": "0.1.57",
+  "version": "0.1.58",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "private": false,
@@ -10,6 +10,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@mui/material": "^5.10.6",
+    "@rollup/plugin-babel": "^6.0.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -36,6 +37,7 @@
     "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-typescript": "^8.5.0",
     "@types/react": "^18.0.21",
+    "libphonenumber-js": "^1.10.13",
     "postcss": "^8.4.17",
     "react": "^18.2.0",
     "rollup": "^2.79.1",
