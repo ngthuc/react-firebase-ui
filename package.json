@@ -1,6 +1,6 @@
 {
   "name": "@ngthuc/react-fui",
-  "version": "0.1.55",
+  "version": "0.1.56",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "private": false,
@@ -58,7 +58,7 @@
     "minor": "npm version minor --force",
     "major": "npm version major --force",
     "version": "npm -f version",
-    "postbuild": "cp package.json dist && cp .npmignore dist",
+    "postbuild": "cp package.json dist && cp .npmignore dist && cp README.txt dist/README.md",
     "publisher": "npm publish --access public",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
