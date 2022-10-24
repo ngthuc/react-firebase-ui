@@ -1,6 +1,6 @@
 {
   "name": "@ngthuc/react-fui",
-  "version": "0.1.52",
+  "version": "0.1.53",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "private": false,
@@ -49,7 +49,8 @@
   "peerDependencies": {
     "firebase": "^9.10.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "libphonenumber-js": "^1.10.13"
   },
   "scripts": {
     "pack": "rm -rf dist && rollup -c",
