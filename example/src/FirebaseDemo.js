@@ -108,8 +108,7 @@ const FirebaseDemo = () => {
 			firebaseAuth={auth}
 			zaloAuthConfig={{
 				appId: '3850903547114980520',
-				redirectUri: 'https://react-firebase-web-auth-demo.web.app/',
-				// redirectUri: 'http://localhost:3000/',
+				redirectUri: window.location.origin,
 				scopes: ['id', 'name', 'picture.type(large)']
 			}}
 		/>

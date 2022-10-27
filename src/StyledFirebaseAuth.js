@@ -7,9 +7,8 @@ import {PhoneNumberEnter, VerifyOTP} from "./Form";
 import SignInWithEmail from "./SignInWithEmail";
 import {typeOf} from "./utils";
 import {RecaptchaVerifier, signInWithEmailAndPassword, signInWithPhoneNumber, signInWithPopup} from "firebase/auth";
-import NewWindow from 'react-new-window';
-import pkceChallenge, {verifyChallenge} from 'pkce-challenge';
 import queryString from 'query-string';
+import {useZaloAccountKit, ZaloLoginPopup} from "./ZaloAccountKit/src";
 
 const addStyleToOptions = (provider) => {
 	const {providerId} = provider;
@@ -99,87 +98,15 @@ const addStyleToOptions = (provider) => {
 	return {provider, ...template, id: providerId, label: `Đăng nhập với ${template.name}`};
 }
 
-const zaloAuthHandler = (provider, state, config = {appId: '', redirectUri: '', scopes: []}) => {
-	const {providerId} = provider;
-	const {appId, redirectUri, scopes} = config;
-	const challenge = pkceChallenge(43);
-	sessionStorage.setItem('auth_key', window.btoa(JSON.stringify(challenge)));
-	const accessTokenUri = 'https://oauth.zaloapp.com/v4/access_token';
-	const graphUri = 'https://graph.zalo.me/v2.0';
-	const oauthUrl = queryString.stringifyUrl({
-		url: 'https://oauth.zaloapp.com/v4/permission',
-		query: {
-			redirect_uri: redirectUri,
-			state,
-			app_id: appId,
-			code_challenge: challenge.code_challenge
-		}
-	});
-
-	function signInWithAuthCode(authCode, codeVerifier) {
-		const myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-		const urlencoded = new URLSearchParams();
-		urlencoded.append("code", authCode);
-		urlencoded.append("app_id", appId);
-		urlencoded.append("grant_type", "authorization_code");
-		urlencoded.append("code_verifier", codeVerifier);
-
-		const requestOptions = {
-			method: 'POST',
-			headers: myHeaders,
-			body: urlencoded,
-			redirect: 'follow'
-		};
-
-		return fetch(accessTokenUri, requestOptions).then(response => response.json());
-	}
-
-	function signInWithRefreshToken(refreshToken) {
-		const myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-		const urlencoded = new URLSearchParams();
-		urlencoded.append("refresh_token", refreshToken);
-		urlencoded.append("app_id", appId);
-		urlencoded.append("grant_type", "refresh_token");
-
-		const requestOptions = {
-			method: 'POST',
-			headers: myHeaders,
-			body: urlencoded,
-			redirect: 'follow'
-		};
-
-		return fetch(accessTokenUri, requestOptions).then(response => response.json());
-	}
-
-	function signInSuccessWithAccessToken(accessToken) {
-		const myHeaders = new Headers();
-		myHeaders.append("access_token", accessToken);
-		myHeaders.append("Cookie", "_zlang=vn");
-
-		const requestOptions = {
-			method: 'GET',
-			headers: myHeaders,
-			redirect: 'follow'
-		};
-
-		return fetch(`${graphUri}/me?fields=${scopes.toString()}`, requestOptions).then(response => response.json());
-	}
-
-	return {providerId, challenge, oauthUrl, signInWithAuthCode, signInWithRefreshToken, signInSuccessWithAccessToken}
-}
-
 const StyledFirebaseAuth = (props) => {
 	const {uiConfig, firebaseAuth, zaloAuthConfig} = props;
 	const {signInOptions, callbacks} = uiConfig;
+	const zaloKit = useZaloAccountKit({...zaloAuthConfig, providerId: PROVIDER_TYPE.ZALO, state: 'zalo_login'});
+	const [{requestUrl, code_verifier}, verifyCode] = zaloKit.oauthRequest('zalo_login', {length: 43});
 
 	const [authType, setAuthType] = useState(AUTH_TYPE.OTHER_AUTH);
 	const [result, setResult] = useState(null);
 	const [phoneNumber, setPhoneNumber] = useState('');
-	const [zaloAuth, setZaloAuth] = useState(null);
 	const [openZaloAuthPopup, setOpenZaloAuthPopup] = useState(false);
 
 	const resetForm = () => {
@@ -211,11 +138,6 @@ const StyledFirebaseAuth = (props) => {
 					});
 				break;
 			case PROVIDER_TYPE.ZALO:
-				setZaloAuth(zaloAuthHandler(
-					provider,
-					'zalo_login',
-					zaloAuthConfig
-				));
 				setOpenZaloAuthPopup(true);
 				break;
 			default:
@@ -283,21 +205,18 @@ const StyledFirebaseAuth = (props) => {
 		const redirectUriQueryParams = Object.keys(queryString.parse(window.location.search));
 		if (compareFields.length === redirectUriQueryParams.length && compareFields.every((field) => redirectUriQueryParams.includes(field))) {
 			const {code, code_challenge} = queryString.parse(window.location.search);
-			const code_verifier = JSON.parse(window.atob(sessionStorage.getItem('auth_key'))).code_verifier;
-			if (code_verifier && verifyChallenge(code_verifier, code_challenge)) {
-				localStorage.setItem('auth_code', window.btoa(code));
-				setOpenZaloAuthPopup(false);
-				window.close();
-			}
+			localStorage.setItem('auth_code', window.btoa(JSON.stringify({code, code_challenge})));
+			setOpenZaloAuthPopup(false);
+			window.close();
 		}
 	}
 
 	const handleUnmountPopup = () => {
-		const authCode = window.atob(localStorage.getItem('auth_code'));
-		if (!typeOf(authCode).isEmpty()) {
-			zaloAuth.signInWithAuthCode(authCode, zaloAuth?.challenge?.code_verifier)
+		const auth_code = JSON.parse(window.atob(localStorage.getItem('auth_code')));
+		if (!typeOf(auth_code.code).isEmpty() && verifyCode(auth_code.code_challenge)) {
+			zaloKit.signInWithAuthCode(auth_code.code, code_verifier)
 				.then((userCredential) => {
-					zaloAuth.signInSuccessWithAccessToken(userCredential?.access_token)
+					zaloKit.signInSuccessWithAccessToken(userCredential?.access_token)
 						.then((userData) => {
 							if (!typeOf(callbacks).isEmpty() && typeOf(callbacks.signInSuccessWithAuthResult).isFunction()) {
 								callbacks.signInSuccessWithAuthResult({
@@ -313,7 +232,7 @@ const StyledFirebaseAuth = (props) => {
 											scopes: zaloAuthConfig.scopes,
 										}]
 									}
-								});``
+								});
 							}
 						});
 				});
@@ -363,9 +282,7 @@ const StyledFirebaseAuth = (props) => {
 				<VerifyOTP onSubmit={verifyOtpAndAuthenticate} onCancel={resetForm} phoneNumber={phoneNumber}/>
 			}
 
-			{
-				openZaloAuthPopup && <NewWindow url={zaloAuth.oauthUrl} onUnload={handleUnmountPopup}/>
-			}
+			<ZaloLoginPopup open={openZaloAuthPopup} requestUrl={requestUrl} onClose={handleUnmountPopup}/>
 		</div>
 	);
 }

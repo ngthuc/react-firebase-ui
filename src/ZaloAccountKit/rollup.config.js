@@ -11,7 +11,7 @@ import pkg from './package.json';
 
 export default [
 	{
-		input: "index.js",
+		input: "src/index.tsx",
 		output: [
 			{
 				file: pkg.main,
@@ -43,7 +43,6 @@ export default [
 		],
 		external: [
 			...Object.keys(pkg.dependencies || {}),
-			"react", "react-dom"
 		]
 	},
 	{
