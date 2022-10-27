@@ -14,8 +14,10 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-firebase-web-auth": "^0.1.61",
+    "react-firebase-web-auth": "^0.1.63",
+    "react-ga": "^3.3.1",
     "react-scripts": "5.0.1",
+    "serve": "^14.0.1",
     "theme-ui": "^0.15.1"
   },
   "devDependencies": {
@@ -24,6 +26,7 @@
     "typescript": "^4.8.4"
   },
   "scripts": {
+    "serve": "serve -s build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test"

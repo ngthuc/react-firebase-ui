@@ -1,32 +1,63 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from "prop-types";
-import {getAuth, signOut} from "firebase/auth";
+import {
+	EmailAuthProvider,
+	getAuth,
+	GithubAuthProvider,
+	GoogleAuthProvider,
+	PhoneAuthProvider,
+	signOut
+} from "firebase/auth";
 import firebase from "firebase/compat/app";
 import {firebaseConfig} from "./firebase";
-import StyledFirebaseAuth from "./components/StyledFirebaseAuth";
-// import StyledFirebaseAuth from "react-firebase-web-auth/StyledFirebaseAuth";
+// import StyledFirebaseAuth from "./components/StyledFirebaseAuth";
+// import useCommon from "./components/useCommon";
+import StyledFirebaseAuth from "react-firebase-web-auth/StyledFirebaseAuth";
+import useCommon from "react-firebase-web-auth/useCommon";
 import parsePhoneNumber from "libphonenumber-js";
+import ReactGA from "react-ga";
 
 firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
+const googleAuthProvider = new GoogleAuthProvider();
+const githubAuthProvider = new GithubAuthProvider();
+const phoneAuthProvider = new PhoneAuthProvider(auth);
+const emailAuthProvider = new EmailAuthProvider();
+const zaloAuthProvider = {
+	providerId: 'zalo.me'
+};
 
-const FirebaseUI = (props) => {
-
-	const {config} = props;
+const FirebaseDemo = () => {
+	const common = useCommon();
+	const countryCode = 'VN';
 	const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
-	const [user, setUser] = useState({});
+	const [userInfo, setUserInfo] = useState({});
 
 	const getDisplayName = () => {
 		if (auth.currentUser) {
 			return auth.currentUser.displayName || auth.currentUser.email || auth.currentUser.phoneNumber;
 		}
-		return user?.displayName || user?.email || user?.phoneNumber || 'Unknown';
+		return userInfo?.displayName || userInfo?.email || userInfo?.phoneNumber || 'Unknown';
+	}
+
+	const handleSignOut = () => {
+		common.signOut(auth, signOut, userInfo.providerData[0].providerId === 'zalo.me')
+			.then(() => {
+				setIsSignedIn(false);
+				setUserInfo({});
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	}
 
 	// Listen to the Firebase Auth state and set the local state.
 	useEffect(() => {
 		const unregisterAuthObserver = auth.onAuthStateChanged((user) => {
 			setIsSignedIn(!!user);
+			ReactGA.event({
+				category: 'FirebaseDemo',
+				action: `Is signed in: ${!!user}`,
+			});
 		});
 		return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
 	}, []);
@@ -37,7 +68,7 @@ const FirebaseUI = (props) => {
 				<p>
 					Xin chào {getDisplayName()}! Bạn hiện đã đăng nhập!
 				</p>
-				<button onClick={() => signOut(auth)}>Đăng xuất</button>
+				<button onClick={handleSignOut}>Đăng xuất</button>
 			</div>
 		);
 	}
@@ -45,12 +76,21 @@ const FirebaseUI = (props) => {
 	return (
 		<StyledFirebaseAuth
 			uiConfig={{
-				...config,
+				defaultCountry: countryCode,
+				signInOptions: [
+					googleAuthProvider,
+					githubAuthProvider,
+					phoneAuthProvider,
+					emailAuthProvider,
+					zaloAuthProvider
+				],
 				callbacks: {
-					...config.callbacks,
 					signInSuccessWithAuthResult: (authResult) => {
 						console.log('signInSuccessWithAuthResult', authResult);
-						setUser(authResult.user);
+						setUserInfo(authResult.user);
+						if (authResult.providerId === 'zalo.me') {
+							setIsSignedIn(true);
+						}
 					},
 					signInFailure: (error) => {
 						// Handle Errors here.
@@ -62,17 +102,18 @@ const FirebaseUI = (props) => {
 					},
 				},
 				locale: {
-					...config.locale,
 					parsePhoneNumber
 				}
 			}}
 			firebaseAuth={auth}
+			zaloAuthConfig={{
+				appId: '3850903547114980520',
+				redirectUri: 'https://react-firebase-web-auth-demo.web.app/',
+				// redirectUri: 'http://localhost:3000/',
+				scopes: ['id', 'name', 'picture.type(large)']
+			}}
 		/>
 	)
 }
 
-FirebaseUI.propsTypes = {
-	config: PropTypes.any.isRequired,
-}
-
-export default FirebaseUI;
+export default FirebaseDemo;

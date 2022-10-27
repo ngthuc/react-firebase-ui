@@ -6,6 +6,7 @@ import {VerifyOTP, PhoneNumberEnter} from "./Form";
 import {AUTH_TYPE, PROVIDER_TYPE} from "./types";
 import {IMAGES} from "./images";
 import {filterPropKeys, typeOf} from "./utils";
+import useCommon from "./useCommon";
 
 export {
 	StyledFirebaseAuth,
@@ -26,5 +27,6 @@ export {
 	PROVIDER_TYPE,
 	IMAGES,
 	filterPropKeys,
-	typeOf
+	typeOf,
+	useCommon
 };

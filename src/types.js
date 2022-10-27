@@ -4,6 +4,7 @@ export const AUTH_TYPE = {
     EMAIL_AUTH: 'email_auth',
     EMAIL_SIGNUP: 'email_signup',
     PHONE_AUTH: 'phone_auth',
+    ZALO_AUTH: 'zalo_auth',
     RECOVERY_PASSWORD: 'recovery_password',
     VERIFY_OTP: 'verify_otp',
     VERIFY_EMAIL: 'verify_email',
