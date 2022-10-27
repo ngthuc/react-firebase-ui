@@ -29,3 +29,5 @@ yarn-error.log*
 
 example/node_modules/
 example/src/components/
+
+example/build/
