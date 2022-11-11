@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from "prop-types";
 import {Button, ButtonIcon, ButtonLabel, ButtonList} from "./Button";
 import {IMAGES} from "./images";
@@ -7,8 +7,6 @@ import {PhoneNumberEnter, VerifyOTP} from "./Form";
 import SignInWithEmail from "./SignInWithEmail";
 import {typeOf} from "./utils";
 import {RecaptchaVerifier, signInWithEmailAndPassword, signInWithPhoneNumber, signInWithPopup} from "firebase/auth";
-import queryString from 'query-string';
-import {useZaloAccountKit, ZaloLoginPopup} from "./ZaloAccountKit/src";
 
 const addStyleToOptions = (provider) => {
 	const {providerId} = provider;
@@ -99,15 +97,12 @@ const addStyleToOptions = (provider) => {
 }
 
 const StyledFirebaseAuth = (props) => {
-	const {uiConfig, firebaseAuth, zaloAuthConfig} = props;
+	const {uiConfig, firebaseAuth} = props;
 	const {signInOptions, callbacks} = uiConfig;
-	const zaloKit = useZaloAccountKit({...zaloAuthConfig, providerId: PROVIDER_TYPE.ZALO, state: 'zalo_login'});
-	const [{requestUrl, code_verifier}, verifyCode] = zaloKit.oauthRequest('zalo_login', {length: 43});
 
 	const [authType, setAuthType] = useState(AUTH_TYPE.OTHER_AUTH);
 	const [result, setResult] = useState(null);
 	const [phoneNumber, setPhoneNumber] = useState('');
-	const [openZaloAuthPopup, setOpenZaloAuthPopup] = useState(false);
 
 	const resetForm = () => {
 		setAuthType(AUTH_TYPE.OTHER_AUTH);
@@ -125,6 +120,7 @@ const StyledFirebaseAuth = (props) => {
 				break;
 			case PROVIDER_TYPE.GOOGLE:
 			case PROVIDER_TYPE.GITHUB:
+			case PROVIDER_TYPE.FACEBOOK:
 				await signInWithPopup(firebaseAuth, provider)
 					.then((userCredential) => {
 						if (!typeOf(callbacks).isEmpty() && typeOf(callbacks.signInSuccessWithAuthResult).isFunction()) {
@@ -138,7 +134,9 @@ const StyledFirebaseAuth = (props) => {
 					});
 				break;
 			case PROVIDER_TYPE.ZALO:
-				setOpenZaloAuthPopup(true);
+				if (!typeOf(callbacks).isEmpty() && typeOf(callbacks.signInSuccessWithAuthResult).isFunction()) {
+					callbacks.signInSuccessWithAuthResult(event);
+				}
 				break;
 			default:
 				break;
@@ -200,49 +198,6 @@ const StyledFirebaseAuth = (props) => {
 			});
 	}
 
-	const handleZaloAuthCode = () => {
-		const compareFields = ['code', 'state', 'code_challenge'];
-		const redirectUriQueryParams = Object.keys(queryString.parse(window.location.search));
-		if (compareFields.length === redirectUriQueryParams.length && compareFields.every((field) => redirectUriQueryParams.includes(field))) {
-			const {code, code_challenge} = queryString.parse(window.location.search);
-			localStorage.setItem('auth_code', window.btoa(JSON.stringify({code, code_challenge})));
-			setOpenZaloAuthPopup(false);
-			window.close();
-		}
-	}
-
-	const handleUnmountPopup = () => {
-		const auth_code = JSON.parse(window.atob(localStorage.getItem('auth_code')));
-		if (!typeOf(auth_code.code).isEmpty() && verifyCode(auth_code.code_challenge)) {
-			zaloKit.signInWithAuthCode(auth_code.code, code_verifier)
-				.then((userCredential) => {
-					zaloKit.signInSuccessWithAccessToken(userCredential?.access_token)
-						.then((userData) => {
-							if (!typeOf(callbacks).isEmpty() && typeOf(callbacks.signInSuccessWithAuthResult).isFunction()) {
-								callbacks.signInSuccessWithAuthResult({
-									operationType: "signIn",
-									providerId: PROVIDER_TYPE.ZALO,
-									user: {
-										accessToken: userCredential?.access_token,
-										displayName: userData?.name,
-										photoURL: userData?.picture?.data?.url,
-										uid: userData?.id,
-										providerData: [{
-											providerId: PROVIDER_TYPE.ZALO,
-											scopes: zaloAuthConfig.scopes,
-										}]
-									}
-								});
-							}
-						});
-				});
-		}
-	}
-
-	useEffect(() => {
-		handleZaloAuthCode();
-	})
-
 	return (
 		<div style={{margin: '50px auto'}}
 		     className="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-phone-sign-in-start"
@@ -281,8 +236,6 @@ const StyledFirebaseAuth = (props) => {
 				authType === AUTH_TYPE.VERIFY_PASSWORD &&
 				<VerifyOTP onSubmit={verifyOtpAndAuthenticate} onCancel={resetForm} phoneNumber={phoneNumber}/>
 			}
-
-			<ZaloLoginPopup open={openZaloAuthPopup} requestUrl={requestUrl} onClose={handleUnmountPopup}/>
 		</div>
 	);
 }

@@ -24,4 +24,14 @@ function filterPropKeys(parentField = {}, listKey = []) {
     }, {});
 }
 
-export {typeOf, getProviderName, filterPropKeys};
+function extractData(input = '', prefix = '', includeKey = [], excludeKey = []) {
+    const fromTextToArray = input && input.match(new RegExp("([^?=&]+)(=([^&]*))?", 'g' ) || []);
+    return fromTextToArray.length > 0 ? fromTextToArray.reduce((data, item) => {
+        const itemArr = item.split('=');
+        if (!itemArr[1] || (includeKey.length > 0 && !includeKey.includes(itemArr[0])) || (excludeKey.length > 0 && excludeKey.includes(itemArr[0])) || !itemArr[0].includes(prefix)) return data;
+        data[itemArr[0].replace(prefix, '')] = itemArr[1];
+        return data;
+    }, {}) : {};
+}
+
+export {typeOf, getProviderName, filterPropKeys, extractData};

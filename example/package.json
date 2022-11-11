@@ -14,9 +14,10 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-firebase-web-auth": "^0.1.65",
+    "react-firebase-web-auth": "^0.1.67",
     "react-ga": "^3.3.1",
     "react-scripts": "5.0.1",
+    "react-zalo-auth-kit": "^1.0.15",
     "serve": "^14.0.1",
     "theme-ui": "^0.15.1"
   },
@@ -29,6 +30,7 @@
     "serve": "serve -s build",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "npm run build && firebase deploy",
     "test": "react-scripts test"
   },
   "eslintConfig": {

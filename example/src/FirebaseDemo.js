@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
 	EmailAuthProvider,
+	FacebookAuthProvider,
 	getAuth,
 	GithubAuthProvider,
 	GoogleAuthProvider,
@@ -9,10 +10,10 @@ import {
 } from "firebase/auth";
 import firebase from "firebase/compat/app";
 import {firebaseConfig} from "./firebase";
-// import StyledFirebaseAuth from "./components/StyledFirebaseAuth";
-// import useCommon from "./components/useCommon";
-import StyledFirebaseAuth from "react-firebase-web-auth/StyledFirebaseAuth";
-import useCommon from "react-firebase-web-auth/useCommon";
+import StyledFirebaseAuth from "./components/StyledFirebaseAuth";
+import useCommon from "./components/useCommon";
+// import StyledFirebaseAuth from "react-firebase-web-auth/StyledFirebaseAuth";
+// import useCommon from "react-firebase-web-auth/useCommon";
 import parsePhoneNumber from "libphonenumber-js";
 import ReactGA from "react-ga";
 
@@ -20,17 +21,15 @@ firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
 const googleAuthProvider = new GoogleAuthProvider();
 const githubAuthProvider = new GithubAuthProvider();
+const facebookAuthProvider = new FacebookAuthProvider();
 const phoneAuthProvider = new PhoneAuthProvider(auth);
 const emailAuthProvider = new EmailAuthProvider();
-const zaloAuthProvider = {
-	providerId: 'zalo.me'
-};
 
 const FirebaseDemo = () => {
 	const common = useCommon();
 	const countryCode = 'VN';
 	const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
-	const [userInfo, setUserInfo] = useState({});
+	const [userInfo, setUserInfo] = useState(null);
 
 	const getDisplayName = () => {
 		if (auth.currentUser) {
@@ -40,14 +39,17 @@ const FirebaseDemo = () => {
 	}
 
 	const handleSignOut = () => {
-		common.signOut(auth, signOut, userInfo.providerData[0].providerId === 'zalo.me')
-			.then(() => {
-				setIsSignedIn(false);
-				setUserInfo({});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		const {providerData} = userInfo || auth.currentUser;
+		if (providerData) {
+			common.signOut(auth, signOut, providerData[0].providerId === 'zalo.me')
+				.then(() => {
+					setIsSignedIn(false);
+					setUserInfo(null);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
 	}
 
 	// Listen to the Firebase Auth state and set the local state.
@@ -74,44 +76,46 @@ const FirebaseDemo = () => {
 	}
 
 	return (
-		<StyledFirebaseAuth
-			uiConfig={{
-				defaultCountry: countryCode,
-				signInOptions: [
-					googleAuthProvider,
-					githubAuthProvider,
-					phoneAuthProvider,
-					emailAuthProvider,
-					zaloAuthProvider
-				],
-				callbacks: {
-					signInSuccessWithAuthResult: (authResult) => {
-						console.log('signInSuccessWithAuthResult', authResult);
-						setUserInfo(authResult.user);
-						if (authResult.providerId === 'zalo.me') {
-							setIsSignedIn(true);
-						}
+		<>
+			<StyledFirebaseAuth
+				uiConfig={{
+					defaultCountry: countryCode,
+					signInOptions: [
+						googleAuthProvider,
+						githubAuthProvider,
+						facebookAuthProvider,
+						phoneAuthProvider,
+						emailAuthProvider
+					],
+					callbacks: {
+						signInSuccessWithAuthResult: (authResult) => {
+							console.log('signInSuccessWithAuthResult', authResult);
+							setUserInfo(authResult.user);
+							if (authResult.providerId === 'zalo.me') {
+								setIsSignedIn(true);
+							}
+						},
+						signInFailure: (error) => {
+							// Handle Errors here.
+							const errorCode = error.code;
+							const errorMessage = error.message;
+							// The email of the user's account used.
+							const {phone, email} = error.customData;
+							console.log('SignIn fail:', {errorCode, errorMessage, phone, email});
+						},
 					},
-					signInFailure: (error) => {
-						// Handle Errors here.
-						const errorCode = error.code;
-						const errorMessage = error.message;
-						// The email of the user's account used.
-						const {phone, email} = error.customData;
-						console.log('SignIn fail:', {errorCode, errorMessage, phone, email});
-					},
-				},
-				locale: {
-					parsePhoneNumber
-				}
-			}}
-			firebaseAuth={auth}
-			zaloAuthConfig={{
-				appId: '3850903547114980520',
-				redirectUri: window.location.origin,
-				scopes: ['id', 'name', 'picture.type(large)']
-			}}
-		/>
+					locale: {
+						parsePhoneNumber
+					}
+				}}
+				firebaseAuth={auth}
+				zaloAuthConfig={{
+					appId: '3850903547114980520',
+					redirectUri: window.location.origin,
+					scopes: ['id', 'name', 'picture.type(large)']
+				}}
+			/>
+		</>
 	)
 }
 
