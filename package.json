@@ -1,6 +1,6 @@
 {
   "name": "react-firebase-web-auth",
-  "version": "0.1.67",
+  "version": "0.1.68",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "private": false,
@@ -52,7 +52,10 @@
   "peerDependencies": {
     "firebase": "^9.10.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.6"
   },
   "scripts": {
     "pack": "rm -rf dist && rollup -c",
@@ -63,6 +66,7 @@
     "major": "npm version major --force",
     "version": "npm -f version",
     "postbuild": "cp package.json dist && cp .npmignore dist && cp README.txt dist/README.md",
+    "auto": "npm run patch && npm run build && cd dist/ && npm run publisher && cd ../",
     "publisher": "npm publish --access public",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
