@@ -6,7 +6,13 @@ import {AUTH_TYPE, PROVIDER_TYPE} from "./types";
 import {PhoneNumberEnter, VerifyOTP} from "./Form";
 import SignInWithEmail from "./SignInWithEmail";
 import {typeOf} from "./utils";
-import {RecaptchaVerifier, signInWithEmailAndPassword, signInWithPhoneNumber, signInWithPopup} from "firebase/auth";
+import {
+	RecaptchaVerifier,
+	signInWithEmailAndPassword,
+	signInWithPhoneNumber,
+	signInWithPopup
+} from "firebase/auth";
+import {signInZaloWithPopup} from "react-zalo-auth-kit";
 
 const addStyleToOptions = (provider) => {
 	const {providerId} = provider;
@@ -97,7 +103,7 @@ const addStyleToOptions = (provider) => {
 }
 
 const StyledFirebaseAuth = (props) => {
-	const {uiConfig, firebaseAuth} = props;
+	const {uiConfig, firebaseAuth, zaloAuth} = props;
 	const {signInOptions, callbacks} = uiConfig;
 
 	const [authType, setAuthType] = useState(AUTH_TYPE.OTHER_AUTH);
@@ -109,7 +115,19 @@ const StyledFirebaseAuth = (props) => {
 		setPhoneNumber('');
 	}
 
-	const handleSignInWithProvider = async (event) => {
+	const handleSuccess = (userCredential) => {
+		if (!typeOf(callbacks).isEmpty() && typeOf(callbacks.signInSuccessWithAuthResult).isFunction()) {
+			callbacks.signInSuccessWithAuthResult(userCredential);
+		}
+	}
+
+	const handleFailure = (error) => {
+		if (!typeOf(callbacks).isEmpty() && typeOf(callbacks.signInFailure).isFunction()) {
+			callbacks.signInFailure(error);
+		}
+	}
+
+	const handleSignInWithProvider = (event) => {
 		const {provider} = event;
 		switch (provider.providerId) {
 			case PROVIDER_TYPE.PHONE:
@@ -121,22 +139,14 @@ const StyledFirebaseAuth = (props) => {
 			case PROVIDER_TYPE.GOOGLE:
 			case PROVIDER_TYPE.GITHUB:
 			case PROVIDER_TYPE.FACEBOOK:
-				await signInWithPopup(firebaseAuth, provider)
-					.then((userCredential) => {
-						if (!typeOf(callbacks).isEmpty() && typeOf(callbacks.signInSuccessWithAuthResult).isFunction()) {
-							callbacks.signInSuccessWithAuthResult(userCredential);
-						}
-					})
-					.catch((error) => {
-						if (!typeOf(callbacks).isEmpty() && typeOf(callbacks.signInFailure).isFunction()) {
-							callbacks.signInFailure(error);
-						}
-					});
+				signInWithPopup(firebaseAuth, provider)
+					.then(handleSuccess)
+					.catch(handleFailure);
 				break;
 			case PROVIDER_TYPE.ZALO:
-				if (!typeOf(callbacks).isEmpty() && typeOf(callbacks.signInSuccessWithAuthResult).isFunction()) {
-					callbacks.signInSuccessWithAuthResult(event);
-				}
+				signInZaloWithPopup(zaloAuth, provider)
+					.then(handleSuccess)
+					.catch(handleFailure);
 				break;
 			default:
 				break;
@@ -243,16 +253,17 @@ const StyledFirebaseAuth = (props) => {
 StyledFirebaseAuth.propTypes = {
 	uiConfig: PropTypes.any.isRequired,
 	firebaseAuth: PropTypes.any.isRequired,
-	zaloAuthConfig: PropTypes.any,
+	zaloAuth: PropTypes.shape({
+		appId: PropTypes.string.isRequired,
+		redirectUri: PropTypes.string,
+	}),
 };
 
 StyledFirebaseAuth.defaultProps = {
 	uiConfig: {},
 	firebaseAuth: {},
-	zaloAuthConfig: {
+	zaloAuth: {
 		appId: 'your_app_id',
-		redirectUri: 'your_redirect_uri',
-		scopes: ['id', 'picture'],
 	},
 };
 

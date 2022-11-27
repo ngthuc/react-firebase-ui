@@ -14,6 +14,7 @@ import StyledFirebaseAuth from "./components/StyledFirebaseAuth";
 import useCommon from "./components/useCommon";
 // import StyledFirebaseAuth from "react-firebase-web-auth/StyledFirebaseAuth";
 // import useCommon from "react-firebase-web-auth/useCommon";
+import {ZaloAuthProvider} from "react-zalo-auth-kit";
 import parsePhoneNumber from "libphonenumber-js";
 import ReactGA from "react-ga";
 
@@ -24,12 +25,15 @@ const githubAuthProvider = new GithubAuthProvider();
 const facebookAuthProvider = new FacebookAuthProvider();
 const phoneAuthProvider = new PhoneAuthProvider(auth);
 const emailAuthProvider = new EmailAuthProvider();
+const zaloAuthProvider = new ZaloAuthProvider();
 
 const FirebaseDemo = () => {
 	const common = useCommon();
 	const countryCode = 'VN';
 	const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
 	const [userInfo, setUserInfo] = useState(null);
+
+	console.log('providers', {provider: phoneAuthProvider, prototype: Object.getPrototypeOf(phoneAuthProvider).constructor.name});
 
 	const getDisplayName = () => {
 		if (auth.currentUser) {
@@ -85,7 +89,7 @@ const FirebaseDemo = () => {
 						githubAuthProvider,
 						facebookAuthProvider,
 						phoneAuthProvider,
-						emailAuthProvider
+						emailAuthProvider,
 					],
 					callbacks: {
 						signInSuccessWithAuthResult: (authResult) => {

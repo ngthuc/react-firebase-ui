@@ -17,7 +17,7 @@
     "react-firebase-web-auth": "^0.1.67",
     "react-ga": "^3.3.1",
     "react-scripts": "5.0.1",
-    "react-zalo-auth-kit": "^1.0.15",
+    "react-zalo-auth-kit": "^1.0.22",
     "serve": "^14.0.1",
     "theme-ui": "^0.15.1"
   },
