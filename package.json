@@ -1,6 +1,6 @@
 {
   "name": "react-firebase-web-auth",
-  "version": "0.1.70",
+  "version": "0.1.71",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "private": false,
