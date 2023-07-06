@@ -1,7 +1,7 @@
 # React Firebase UI
 
 ## Demo
-See at [link](https://react-firebase-web-auth-demo.firebaseapp.com/)
+See at [https://react-firebase-web-auth-demo.web.app/](https://react-firebase-web-auth-demo.web.app/)
 
 ## Usage
 ```
